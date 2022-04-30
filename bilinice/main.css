@@ -1,0 +1,55 @@
+header {
+    height: 50px;
+    background-color: green;
+    padding: 0px;
+    margin: 0px;
+}
+
+header h1{
+    color: white;
+}
+
+#navbar {
+    height: 25px;
+    background-color: grey;
+    padding: 0px;
+    margin: 0px;
+    color: white;
+    font-size: larger;
+    font-family: sans-serif;
+    
+}
+
+h1 {
+    color: green;
+    text-align: center;
+}
+
+main h1 {
+    color: blueviolet;
+    
+}
+
+
+
+#maincontent {
+    color: blue;
+}
+
+div#container {
+display:flex;
+}
+
+#container aside {
+    background-color: lightgray;
+    padding-left: 10px;
+    padding-right: 10px;
+    flex: 1;
+}
+
+#container main {
+    background-color: white;
+    margin-right: 10px;
+    margin-left: 10px;
+    flex: 2;
+}
