@@ -1,10 +1,12 @@
-function disGraf {
+function disGraf () {
     
     var T = [5, -2, 4, 3, 6, 8, 7, -4, -8, 7, 6]; //Dati
 
     var i, h;                         // indice e ?
     var step = (CNV.width / (T.length - 1)) - 10; //distanza tra i punti
     var pos = 0;                       // valore iniziale del punto  
+
+    // alert("siamo arrivati qui!") ;
 
 
     var x0 = 10;                       // offset X per inizio del grafico

@@ -19,21 +19,24 @@
     <nav id="navbar">
         <h1>Navigazione</h1>
     </nav>
-    <div id="container">
-        <aside>
-            <h1>Titolo del form</h1>
-            <br><br><br>
-            <p> questo è il form </p>
-            <br><br><br>
-        </aside>
-        <main id="maincontent">
-            <h1>Titolo del grafico</h1>
-            <br>
-            <canvas id="CNV" width="600" height="400" style="border:1px solid green;background:#cc0;">
-            </canvas>
-            <script src="creagrafico.js">
-            </script>
-        </main>
+    <div id="container" class="container-fluid">
+        <div class="row">
+            <aside class="col-3">
+                <h1>Titolo del form</h1>
+                <br><br><br>
+                <p> questo è il form </p>
+                </p><button type="button" onclick="disGraf()">Mostra grafico</button></p>
+                <br><br><br>
+            </aside>
+            <main id="maincontent" class="col-9">
+                <h1>Titolo del grafico</h1>
+                <br>
+                <canvas id="CNV" width="600" height="400" style="border:1px solid green;background:#cc0;">
+                </canvas>
+                <script src="creagrafico.js">
+                </script>
+            </main>
+        </div>
     </div>
     <footer>
         Piede
