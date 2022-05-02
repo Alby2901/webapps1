@@ -13,21 +13,32 @@
 </head>
 
 <body>
-    <header>
-        <h1>Testata</h1>
+    <header class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <h1>Testata</h1>
+            </div>
+        </div>
     </header>
-    <nav id="navbar">
-        <h1>Navigazione</h1>
+
+    <nav class="container-fluid">
+        <div class="row">
+            <div id="navbar" class="col">
+                <h1>Navigazione</h1>
+            </div>
+        </div>
     </nav>
+
     <div id="container" class="container-fluid">
         <div class="row">
             <aside class="col-3">
                 <h1>Titolo del form</h1>
                 <br><br><br>
                 <p> questo è il form </p>
-                </p><button type="button" class="btn btn-outline-primary" onclick="disGraf()">Mostra grafico</button></p>
+                </p><button type="button" class="btn btn-outline-primary" onclick="disGraf()">Mostra grafico</button>
+                </p>
                 <br>
-                <p id="parametriUrl"  class="invisible">Parametri URL </p>
+                <p id="parametriUrl" class="invisible">Parametri URL </p>
                 <p id="parametriUrl2"> Parametri URL2 </p>
                 <br><br>
             </aside>
@@ -41,9 +52,15 @@
             </main>
         </div>
     </div>
-    <footer>
-        Piede
+
+    <footer class="container-fluid">
+        <div class="row">
+            <div class="col">
+                Piede
+            </div>
+        </div>
     </footer>
+    
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
         integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"
         crossorigin="anonymous"></script>
