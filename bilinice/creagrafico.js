@@ -1,3 +1,5 @@
+'use strict'
+
 function disGraf() {
 
     // leggere i parametri dall'Url
@@ -37,7 +39,7 @@ function disGraf() {
     const parametri = queryString.split("&")
     console.log("Array parametri: "+parametri);
 
-    document.getElementById("parametriUrl").innerHTML = "pippo";
+    document.getElementById("parametriUrl").innerHTML = "pluto";
     document.getElementById("parametriUrl").className = "visible";
     document.getElementById("parametriUrl2").innerHTML = queryString;
 
@@ -103,4 +105,6 @@ function disGraf() {
         pos = pos + step;
 
     }//fine for
+
+    
 }
