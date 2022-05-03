@@ -1,5 +1,9 @@
 'use strict'
 
+function calcolaValori(){
+    console.log('Siamo in calcola valori');
+}
+
 function disGraf() {
 
     // leggere i parametri dall'Url
@@ -21,6 +25,10 @@ function disGraf() {
     const pazEtaGest = urlParams.get('pazeg'); console.log(pazEtaGest);
     const esameUnitMis = urlParams.get('examumis'); console.log(esameUnitMis);
 
+    console.log('fname_innerHTML= '+ document.getElementById('fname').value);
+    document.getElementById('fname').value = pazNome;
+    console.log('fname_innerTEXT= '+ document.getElementById('fname').value);
+
     // controlla se un parametro è pieno o vuoto: se newUser è vuota vale false
     // ATTENZIONE se non c'è è come se fosse vuoto
     const newUser = urlParams.get('newuser'); console.log(newUser ? "piena" : "vuota");
@@ -39,9 +47,9 @@ function disGraf() {
     const parametri = queryString.split("&")
     console.log("Array parametri: "+parametri);
 
-    document.getElementById("parametriUrl").innerHTML = "pluto";
-    document.getElementById("parametriUrl").className = "visible";
-    document.getElementById("parametriUrl2").innerHTML = queryString;
+    // document.getElementById("parametriUrl").innerHTML = "pluto";
+    // document.getElementById("parametriUrl").className = "visible";
+    // document.getElementById("parametriUrl2").innerHTML = queryString;
 
     const T = [5, -2, 4, 3, 6, 8, 7, -4, -8, 7, 6]; //Dati
 

@@ -14,7 +14,7 @@
     <!-- <link rel='stylesheet' type='text/css' media='screen' href='main.css'> -->
     <script defer src='creagrafico.js'></script>
     <!-- <script src='main.js'></script> -->
-    <link rel='stylesheet' type='text/css' media='screen' href='indexgraf.html'>
+    <link rel='stylesheet' type='text/css' media='screen' href='index.html'>
     <!-- Include the ECharts file you just downloaded -->
     <script src="echarts.js"></script>
 
@@ -41,20 +41,27 @@
         <div class="row">
             <aside class="col-3">
                 <h1>Titolo del form</h1>
-                <br><br><br>
-                <p> questo è il form </p>
+                <form action="#">
+                    <label for="fname">First name:</label><br>
+                    <input type="text" id="fname" name="fname" value="John"><br>
+                    <label for="lname">Last name:</label><br>
+                    <input type="text" id="lname" name="lname" value="Doe"><br><br>
+                    <input type="button" class="btn btn-outline-secondary" onclick="calcolaValori();" value="Calcola"/>
+                  </form> 
+                  
+                  <p>If you click the "Submit" button, the form-data will be sent to a page called "/action_page.php".</p>
                 </p><button type="button" class="btn btn-outline-primary" 
                             onclick="disGraf()">Mostra grafico</button>
                 </p>
-                <br>
+                <!-- <br>
                 <p id="parametriUrl" class="invisible">Parametri URL </p>
                 <p id="parametriUrl2"> Parametri URL2 </p>
-                <br><br>
+                <br> -->
             </aside>
             <main id="maincontent" class="col-9">
                 <h1>Titolo del grafico</h1>
                 <br>
-                <!-- <canvas id="CNV" width="600" height="400" style="border:1px solid green;background:#cc0;"> </canvas> -->
+                <canvas id="CNV" width="600" height="400" style="border:1px solid green;background:#cc0;"> </canvas>
                 <div id="main" style="width: 600px;height:400px;"></div>
                 <script type="text/javascript" src="graficolinearenew.js"></script>
             </main>
