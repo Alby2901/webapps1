@@ -38,6 +38,7 @@
     document.getElementById('pazDataNasc').value = pazDataNasc;
     document.getElementById('pazOraNasc').value = pazOraNasc;
     document.getElementById('pazMinNasc').value = pazMinNasc;
+    document.getElementById('pazEtaGest').value = pazEtaGest;
 
 
 function calcolaValori(){

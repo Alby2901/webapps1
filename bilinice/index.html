@@ -27,42 +27,42 @@
 </head>
 
 <body>
+
     <header class="container-fluid">
         <div class="row">
             <div class="col">
-                <h1>Testata</h1>
+                <h1 class="text-center text-primary">Nice Guidelile Bilirubin Calculator</h1>
             </div>
         </div>
     </header>
 
-    <nav class="container-fluid">
+    <!-- <nav class="container-fluid">
         <div class="row">
             <div id="navbar" class="col">
                 <h1>Navigazione</h1>
             </div>
         </div>
-    </nav>
+    </nav> -->
 
     <div id="container" class="container-fluid">
         <div class="row">
-            <aside class="col-4">
-                <h1>Titolo del form</h1>
+            <aside class="col-6">
                 <form>
                     <table>
                         <tbody>
                             <tr>
                                 <td>
-                                    Paziente: 
+                                    Pazient Name:
                                 </td>
-                                
+
                                 <td>
-                                    <!-- <label for="pazCognNom" class="form-label">Paziente</label> -->
+                                    <!-- <label for="pazCognNom" class="form-label">Pazient Name</label> -->
                                     <input type="text" class="form-control" id="pazCognNom">
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    Data di nascita:
+                                    Date and time of birth:
                                 </td>
                                 <td>
 
@@ -71,8 +71,8 @@
                                 </td>
                                 <td>
                                     <!-- <label for="pazOraNasc" class="form-label">ora</label> -->
-                                    <select id="pazOraNasc" class="form-select" aria-label="Ora della nascita">
-                                        <option selected>Ora nascita</option>
+                                    <select id="pazOraNasc" class="form-select" aria-label="Hour of birth">
+                                        <option selected>Hour birth</option>
                                         <option value="0">00</option>
                                         <option value="1">01</option>
                                         <option value="2">02</option>
@@ -101,8 +101,8 @@
                                 </td>
                                 <td>
                                     <!-- <label for="pazOraNasc" class="form-label">minuto</label> -->
-                                    <select id="pazMinNasc" class="form-select" aria-label="Minuti nascita">
-                                        <option selected>Minuti nascita</option>
+                                    <select id="pazMinNasc" class="form-select" aria-label="Minutes of birth">
+                                        <option selected>Minute birth</option>
                                         <option value="1">01</option>
                                         <option value="2">02</option>
                                         <option value="3">03</option>
@@ -115,17 +115,17 @@
                             </tr>
                             <tr>
                                 <td>
-                                    Data di esame:
+                                    Date and time of exam:
                                 </td>
                                 <td>
 
                                     <!-- <label for="pazDataNasc" class="form-label">Data di nascita</label> -->
-                                    <input type="date" class="form-control" id="esaData" aria-label="Data dell'esame">
+                                    <input type="date" class="form-control" id="esaData" aria-label="Date of exam">
                                 </td>
                                 <td>
                                     <!-- <label for="pazOraNasc" class="form-label">ora</label> -->
-                                    <select id="esaOra" class="form-select" aria-label="Ora dell'esame">
-                                        <option selected>Ora esame</option>
+                                    <select id="esaOra" class="form-select" aria-label="Hour of exam">
+                                        <option selected>Hour exam</option>
                                         <option value="0">00</option>
                                         <option value="1">01</option>
                                         <option value="2">02</option>
@@ -154,8 +154,8 @@
                                 </td>
                                 <td>
                                     <!-- <label for="pazOraNasc" class="form-label">minuto</label> -->
-                                    <select id="esaMin" class="form-select" aria-label="Minuti dell'esame">
-                                        <option selected>Minuti esame</option>
+                                    <select id="esaMin" class="form-select" aria-label="Minute of exam">
+                                        <option selected>Minute exam</option>
                                         <option value="1">01</option>
                                         <option value="2">02</option>
                                         <option value="3">03</option>
@@ -166,10 +166,63 @@
                                     </select>
                                 </td>
                             </tr>
-                            
                             <tr>
                                 <td>
-                                                                        <input type="button" class="btn btn-outline-secondary" onclick="calcolaValori();"
+                                    Gestional age:
+                                </td>
+
+                                <td>
+                                    <!-- <label for="pazOraNasc" class="form-label">ora</label> -->
+                                    <select id="pazEtaGest" class="form-select" aria-label="Gestional age">
+                                        <option selected>Gestional Age</option>
+                                        <option value="23">23</option>
+                                        <option value="24">24</option>
+                                        <option value="25">25</option>
+                                        <option value="26">26</option>
+                                        <option value="27">27</option>
+                                        <option value="28">28</option>
+                                        <option value="29">29</option>
+                                        <option value="30">30</option>
+                                        <option value="31">31</option>
+                                        <option value="32">32</option>
+                                        <option value="33">33</option>
+                                        <option value="34">34</option>
+                                        <option value="35">35</option>
+                                        <option value="36">36</option>
+                                        <option value="37">37</option>
+                                        <option value="38">38</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Hour after bird:
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" id="hourAfterBirth">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" id="dayHourAfterBirth">
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-outline-success">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            fill="currentColor" class="bi bi-calculator" viewBox="0 0 16 16">
+                                            <path
+                                                d="M12 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h8zM4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4z" />
+                                            <path
+                                                d="M4 2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1-.5-.5v-2zm0 4a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm3-6a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm3-6a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-4z" />
+                                        </svg>
+                                        Calc
+                                    </button>
+
+
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <input type="button" class="btn btn-outline-secondary" onclick="calcolaValori();"
                                         value="Calcola" />
                                 </td>
                             </tr>
@@ -181,8 +234,7 @@
                 </p><button type="button" class="btn btn-outline-primary" onclick="disGraf()">Mostra grafico</button>
 
             </aside>
-            <main id="maincontent" class="col-8">
-                <h1>Titolo del grafico</h1>
+            <main id="maincontent" class="col-6">
                 <div id="main" style="width: 600px;height:400px;"></div>
                 <script type="text/javascript" src="graficolinearenew.js"></script>
             </main>
