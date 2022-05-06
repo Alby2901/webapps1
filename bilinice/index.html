@@ -22,6 +22,7 @@
     <script src="echarts.js"></script>
 
     <!-- Javascript -->
+    <script defer src='functions.js'></script>
     <script defer src='main.js'></script>
 
 </head>
@@ -55,24 +56,30 @@
                                 <td>
                                     Pazient Name:
                                 </td>
-
                                 <td>
                                     <!-- <label for="pazCognNom" class="form-label">Pazient Name</label> -->
                                     <input type="text" class="form-control" id="pazCognNom">
                                 </td>
                             </tr>
-                            <!-- Date of birth -->
+                            <!-- Date of birth new -->
                             <tr>
+                                <td>
+                                    Date of Birth:
+                                </td>
+                                <td>
+                                    <input type="datetime-local" id="DayTimeofBirth" name="DayTimeofBirth"
+                                        class="form-comtrol" value="2018-06-12T19:30" min="2018-06-07T00:00">
+                                </td>
+                            </tr>
+                            <!-- Date of birth old-->
+                            <!-- <tr>
                                 <td>
                                     Date and time of birth:
                                 </td>
                                 <td>
-
-                                    <!-- <label for="pazDataNasc" class="form-label">Data di nascita</label> -->
                                     <input type="date" class="form-control" id="pazDataNasc">
                                 </td>
                                 <td>
-                                    <!-- <label for="pazOraNasc" class="form-label">ora</label> -->
                                     <select id="pazOraNasc" class="form-select" aria-label="Hour of birth">
                                         <option selected>Hour birth</option>
                                         <option value="0">00</option>
@@ -102,31 +109,43 @@
                                     </select>
                                 </td>
                                 <td>
-                                    <!-- <label for="pazOraNasc" class="form-label">minuto</label> -->
                                     <select id="pazMinNasc" class="form-select" aria-label="Minutes of birth">
                                         <option selected>Minute birth</option>
-                                        <option value="1">01</option>
-                                        <option value="2">02</option>
-                                        <option value="3">03</option>
-                                        <option value="4">04</option>
-                                        <option value="5">05</option>
-                                        <option value="6">06</option>
-                                        <option value="21">21</option>
+                                        <option value="00">00</option>
+                                        <option value="05">05</option>
+                                        <option value="10">10</option>
+                                        <option value="15">15</option>
+                                        <option value="20">20</option>
+                                        <option value="25">25</option>
+                                        <option value="30">30</option>
+                                        <option value="35">35</option>
+                                        <option value="40">40</option>
+                                        <option value="45">45</option>
+                                        <option value="50">50</option>
+                                        <option value="55">55</option>
+
                                     </select>
                                 </td>
-                            </tr>
-                            <!-- Date Exam -->
+                            </tr> -->
+                            <!-- Date of Exam new -->
                             <tr>
+                                <td>
+                                    Date of Exam:
+                                </td>
+                                <td>
+                                    <input type="datetime-local" id="DayTimeofExam" name="DayTimeofExam"
+                                        class="form-comtrol" value="2018-06-12T19:30" min="2018-06-07T00:00">
+                                </td>
+                            </tr>
+                            <!-- Date of Exam old -->
+                            <!-- <tr>
                                 <td>
                                     Date and time of exam:
                                 </td>
                                 <td>
-
-                                    <!-- <label for="pazDataNasc" class="form-label">Data di nascita</label> -->
                                     <input type="date" class="form-control" id="esaData" aria-label="Date of exam">
                                 </td>
                                 <td>
-                                    <!-- <label for="pazOraNasc" class="form-label">ora</label> -->
                                     <select id="esaOra" class="form-select" aria-label="Hour of exam">
                                         <option selected>Hour exam</option>
                                         <option value="0">00</option>
@@ -156,7 +175,6 @@
                                     </select>
                                 </td>
                                 <td>
-                                    <!-- <label for="pazOraNasc" class="form-label">minuto</label> -->
                                     <select id="esaMin" class="form-select" aria-label="Minute of exam">
                                         <option selected>Minute exam</option>
                                         <option value="1">01</option>
@@ -168,7 +186,7 @@
                                         <option value="21">21</option>
                                     </select>
                                 </td>
-                            </tr>
+                            </tr> -->
                             <!-- Gestional Age -->
                             <tr>
                                 <td>
@@ -210,7 +228,8 @@
                                     <input type="text" class="form-control" id="dayHourAfterBirth">
                                 </td>
                                 <td>
-                                    <button type="button" class="btn btn-outline-success">
+                                    <button type="button" class="btn btn-outline-success" onclick="calcolaValori()"
+                                        value="Calcola">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                             fill="currentColor" class="bi bi-calculator" viewBox="0 0 16 16">
                                             <path
@@ -218,7 +237,6 @@
                                             <path
                                                 d="M4 2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1-.5-.5v-2zm0 4a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm3-6a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm3-6a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-4z" />
                                         </svg>
-                                        Calc
                                     </button>
 
 
@@ -235,32 +253,12 @@
                                 <td>
                                     <!-- <label for="pazOraNasc" class="form-label">ora</label> -->
                                     <select id="pazEtaGest" class="form-select" aria-label="Gestional age">
-                                        <option selected>Gestional Age</option>
+                                        <option selected>Unit of measure</option>
                                         <option value="0">mg/Dl</option>
                                         <option value="1">mmol/dl</option>
                                     </select>
                                 </td>
                             </tr>
-
-
-                            <tr>
-                                <td>
-                                    <input type="button" class="btn btn-outline-secondary" onclick="calcolaValori();"
-                                        value="Calcola" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label for="DayTimeofBirth">Date of Birth:</label>
-                                    <input type="datetime-local" id="DayTimeofBirth" name="DayTimeofBirth"
-                                        value="2018-06-12T19:30" min="2018-06-07T00:00" max="2018-06-14T00:00">
-                                    <label for="DayTimeofExam">Date of Exam:</label>
-                                    <input type="datetime-local" id="DayTimeofExam" name="DayTimeofExam"
-                                        value="2018-06-12T19:30" min="2018-06-07T00:00" max="2018-06-14T00:00">
-
-                                </td>
-                            </tr>
-
                         </tbody>
                     </table>
                 </form>
@@ -275,13 +273,28 @@
         </div>
     </div>
 
-    <footer class="container-fluid">
+    <!-- <footer class="container-fluid">
         <div class="row">
             <div class="col">
                 Piede
             </div>
         </div>
-    </footer>
+    </footer> -->
+
+    <test class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <h1>AREA DEI TEST</h1>
+                <p></p>
+                <label for="DayTimeofBirthTEST">Date of Birth:</label>
+                <input type="datetime-local" id="DayTimeofBirthTEST" name="DayTimeofBirthTEST" value="2018-06-12T19:30"
+                    min="2018-06-07T00:00" max="2018-06-14T00:00">
+                <label for="DayTimeofExam">Date of Exam:</label>
+                <input type="datetiDayTimeofExamTESTme-local" id="DayTimeofExamTEST" name="DayTimeofExam"
+                    value="2018-06-12T19:30" min="2018-06-07T00:00" max="2018-06-14T00:00">
+            </div>
+        </div>
+    </test>
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
         integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"
