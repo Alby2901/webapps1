@@ -23,8 +23,28 @@
     const dateTemp = pazDataNascCompl.toString(); console.log("dateTemp= " + dateTemp);
     const pazDataNasc = dateTemp.substring(0,4) + "-" + dateTemp.substring(4,6) + "-" + dateTemp.substring(6,8);
     console.log("pazDataNasc=  " + pazDataNasc);
+    
+    const pazDataNasc2 = pazDataNascCompl.substring(0,4) + "-" + pazDataNascCompl.substring(4,6) + "-" + pazDataNascCompl.substring(6,8);
+    console.log("pazDataNasc2=  " + pazDataNasc2);
     const pazOraNasc = dateTemp.substring(8,10); console.log("pazOraNasc=  " + pazOraNasc); 
-    const pazMinNasc = dateTemp.substring(10,12); console.log("pazMinNasc=  " + pazMinNasc); 
+    const pazMinNasc = dateTemp.substring(10,12); console.log("pazMinNasc=  " + pazMinNasc);
+
+
+    const date1 = dayjs(pazDataNascCompl,"YYYYMMDDmmss")
+    console.log("date1= "+ dayjs(date1).format());
+    const date2 = dayjs();
+    console.log("date2= "+ dayjs(date2).format());
+    const diffDay = Math.round(date2.diff(date1, 'day', true));
+    const hourBirthExam = Math.round(date2.diff(date1, 'hour', true));
+    console.log("DiffDate(day)= "+ diffDay);
+    console.log("DiffDate(day)= "+ hourBirthExam);
+        
+    const dateTimeFieldStrDateofBirth = dayjs(date1).format('YYYY-MM-DD') +"T"+ dayjs(date1).format('HH') +":"+ dayjs(date1).format('mm');
+    console.log("date and time= " + dateTimeFieldStrDateofBirth);
+
+    const dateTimeFieldStrDateofExam = dayjs().format('YYYY-MM-DD') +"T"+ dayjs().format('HH') +":"+ dayjs().format('mm');
+    console.log("date and time= " + dateTimeFieldStrDateofExam);
+ 
     
     // const pazDataNasc = dayjs(dateTemp.substring(0,7)); console.log("pazDataNasc=  " + pazDataNasc);
     // const dataCorrente = dayjs(); console.log("dataCorrente=  " + dataCorrente);
@@ -39,7 +59,10 @@
     document.getElementById('pazOraNasc').value = pazOraNasc;
     document.getElementById('pazMinNasc').value = pazMinNasc;
     document.getElementById('pazEtaGest').value = pazEtaGest;
-
+    document.getElementById('DayTimeofBirth').value = dateTimeFieldStrDateofBirth;
+    document.getElementById('DayTimeofExam').value = dateTimeFieldStrDateofExam;
+    document.getElementById('hourAfterBirth').value = hourBirthExam;
+    document.getElementById('dayHourAfterBirth').value = diffDay + " days (rounded)";
 
 function calcolaValori(){
     console.log('Siamo in "calcola valori"'); alert('Siamo in "calcola valori"');

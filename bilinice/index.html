@@ -50,6 +50,7 @@
                 <form>
                     <table>
                         <tbody>
+                            <!-- Patient Name -->
                             <tr>
                                 <td>
                                     Pazient Name:
@@ -60,6 +61,7 @@
                                     <input type="text" class="form-control" id="pazCognNom">
                                 </td>
                             </tr>
+                            <!-- Date of birth -->
                             <tr>
                                 <td>
                                     Date and time of birth:
@@ -113,6 +115,7 @@
                                     </select>
                                 </td>
                             </tr>
+                            <!-- Date Exam -->
                             <tr>
                                 <td>
                                     Date and time of exam:
@@ -166,6 +169,7 @@
                                     </select>
                                 </td>
                             </tr>
+                            <!-- Gestional Age -->
                             <tr>
                                 <td>
                                     Gestional age:
@@ -194,9 +198,10 @@
                                     </select>
                                 </td>
                             </tr>
+                            <!-- hour after Birth -->
                             <tr>
                                 <td>
-                                    Hour after bird:
+                                    Hour after birth:
                                 </td>
                                 <td>
                                     <input type="text" class="form-control" id="hourAfterBirth">
@@ -219,11 +224,40 @@
 
                                 </td>
                             </tr>
+                            <!-- Total serum bilirubin -->
+                            <tr>
+                                <td>
+                                    Total serum bilirubin:
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" id="totalSerumBili">
+                                </td>
+                                <td>
+                                    <!-- <label for="pazOraNasc" class="form-label">ora</label> -->
+                                    <select id="pazEtaGest" class="form-select" aria-label="Gestional age">
+                                        <option selected>Gestional Age</option>
+                                        <option value="0">mg/Dl</option>
+                                        <option value="1">mmol/dl</option>
+                                    </select>
+                                </td>
+                            </tr>
+
 
                             <tr>
                                 <td>
                                     <input type="button" class="btn btn-outline-secondary" onclick="calcolaValori();"
                                         value="Calcola" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label for="DayTimeofBirth">Date of Birth:</label>
+                                    <input type="datetime-local" id="DayTimeofBirth" name="DayTimeofBirth"
+                                        value="2018-06-12T19:30" min="2018-06-07T00:00" max="2018-06-14T00:00">
+                                    <label for="DayTimeofExam">Date of Exam:</label>
+                                    <input type="datetime-local" id="DayTimeofExam" name="DayTimeofExam"
+                                        value="2018-06-12T19:30" min="2018-06-07T00:00" max="2018-06-14T00:00">
+
                                 </td>
                             </tr>
 

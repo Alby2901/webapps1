@@ -1,0 +1,453 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009"
+			   xmlns:s="library://ns.adobe.com/flex/spark"
+			   xmlns:mx="library://ns.adobe.com/flex/mx"
+			   xmlns:ns1="*"
+			   xmlns:iframe="http://code.google.com/p/flex-iframe/"
+			   width="100%" height="100%" minWidth="955" minHeight="600" backgroundColor="#EFEFEF"
+			   creationComplete="creationCompleteHandler(event)"
+			   preinitialize="application1_preinitializeHandler(event)">
+	<fx:Declarations>
+		<fx:String id="bannerContent">
+			<![CDATA[
+			<html>
+			<script type="text/javascript">
+			document.write('<s'+'cript type="text/javascript" src="http://ad.altervista.org/js.ad/size=300X250/r='+new Date().getTime()+'"><\/s'+'cript>');
+			</script>
+			</html>
+			]]>
+		</fx:String>
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import mx.charts.chartClasses.IAxis;
+			import mx.charts.chartClasses.IAxisRenderer;
+			import mx.collections.ArrayCollection;
+			import mx.collections.Sort;
+			import mx.collections.SortField;
+			import mx.controls.Alert;
+			import mx.core.FlexGlobals;
+			import mx.events.FlexEvent;
+			import mx.formatters.DateBase;
+			import mx.formatters.NumberFormatter;
+			import mx.logging.LogEvent;
+			
+			import spark.events.IndexChangeEvent;
+			import spark.formatters.DateTimeFormatter;
+			
+			[Bindable]
+			private var bundle:Language;
+			
+			
+			var dateBorn:Date;
+			var dateExam:Date;
+			[Bindable]
+			var umisLabel:String="";
+			var umis:String;			
+			var eg:int;
+			var eValue:Number;
+			var hLife:int;
+			
+			
+			[Bindable]
+			private var hourArray:ArrayCollection	= new ArrayCollection (["00","01","02","03","04","05","06" +
+				"07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23"]);
+			[Bindable]
+			private var minArray:ArrayCollection	= new ArrayCollection (["00","05","10","15","20","25","30" +
+				"35","40","45","50","55"]);
+			[Bindable]
+			private var egArray:ArrayCollection	= new ArrayCollection (["23","24","25","26","27","28","29" +
+				"30","31","32","33","34","35","36","37","38"]);
+			[Bindable]
+			private var umisArray:ArrayCollection	= new ArrayCollection (["mmol/dl","mg/dl"]);
+			protected function application1_preinitializeHandler(event:FlexEvent):void
+			{
+				//				
+			}
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				//var pazName:String;
+				var pazCode:String;
+				var pazDnas:String;
+				var examDt:String;
+				var examValue:String;
+				var examUmis:String
+				var pazEg:String;
+				var lang:String="EN";
+				
+				var today:Date=new Date();
+				pazName.text = FlexGlobals.topLevelApplication.parameters.pazName;
+				pazCode = FlexGlobals.topLevelApplication.parameters.pazCode;
+				pazDnas = FlexGlobals.topLevelApplication.parameters.pazDnas
+				pazEg = FlexGlobals.topLevelApplication.parameters.pazEg
+				lang = FlexGlobals.topLevelApplication.parameters.lang;
+				examDt=FlexGlobals.topLevelApplication.parameters.examDate;
+				examValue=FlexGlobals.topLevelApplication.parameters.examValue;
+				examUmis=FlexGlobals.topLevelApplication.parameters.examUmis;
+				
+				if (!lang)
+					lang=Capabilities.language
+				
+				if (lang) {
+					bundle=new Language(lang.toUpperCase());
+					//bundle.lang="IT";
+				}else
+					bundle=new Language("EN");
+				
+				if (pazDnas)
+					dateBorn=new Date(Number(pazDnas.substr(0,4)),
+						Number(pazDnas.substr(4,2))-1,
+						Number(pazDnas.substr(6,2)),
+						Number(pazDnas.substr(8,2)),
+						Number(pazDnas.substr(10,2)))
+				else 
+					dateBorn=today;
+				
+				if (examDt)
+					dateExam=new Date(Number(examDt.substr(0,4)),
+						Number(examDt.substr(4,2))-1,
+						Number(examDt.substr(6,2)),
+						Number(examDt.substr(8,2)),
+						Number(examDt.substr(10,2)))
+				else 
+					dateExam=today;
+				
+				egCombo.selectedItem=pazEg;
+				
+				if (examValue)
+					bilivalue.text=(Number(examValue)/100).toString();
+				
+				if (examUmis){
+					if (examUmis==Nomogram.MGDL)
+						umisCombo.selectedItem="mg/dl";
+					else if (examUmis==Nomogram.MMOL)
+						umisCombo.selectedItem="mmol/dl";
+				}
+				
+				dateExam=today;
+				bornDate.selectableRange={rangeStart:new Date(today.getTime()-14*86400000),  rangeEnd:today};
+				bornDate.selectedDate=dateBorn;
+				examDate.selectedDate=dateExam;
+				
+				if (dateBorn.hours<10)
+					bornHour.selectedItem="0"+dateBorn.hours.toString();
+				else
+					bornHour.selectedItem=dateBorn.hours.toString();
+				
+				if (dateBorn.minute<10)
+					bornMin.selectedItem="0"+dateBorn.minutes.toString();
+				else
+					bornMin.selectedItem=dateBorn.minutes.toString();
+				
+				if (dateExam.hours<10)
+					examHour.selectedItem="0"+dateExam.hours.toString();
+				else
+					examHour.selectedItem=dateExam.hours.toString();
+				if (dateExam.minutes<10)
+					examMin.selectedItem="0"+dateExam.minutes.toString();
+				else
+					examMin.selectedItem=dateExam.minutes.toString();
+				button2_clickHandler(new MouseEvent(MouseEvent.CLICK));
+				
+				bornDate.formatString=bundle.getString("dateformat")
+				examDate.formatString=bundle.getString("dateformat")
+				
+				
+			}
+			
+			
+			
+			
+			private function calcHlife():int{
+				var diff:Number
+				dateBorn=bornDate.selectedDate
+				dateBorn.setHours(Number(bornHour.selectedItem));
+				dateBorn.setMinutes(Number(bornMin.selectedItem));
+				dateExam=examDate.selectedDate;
+				dateExam.setHours(Number(examHour.selectedItem));
+				dateExam.setMinutes(Number(examMin.selectedItem));
+				if (dateBorn<=dateExam)
+					diff = (dateExam.getTime() - dateBorn.getTime()) / (1000 * 60 * 60 );
+				else
+					diff = (dateBorn.getTime() - dateExam.getTime()) / (1000 * 60 * 60 );
+				hLife=diff;
+				return diff;
+			}
+			
+			private function validate():Boolean {
+				if (dateBorn>dateExam) {
+					Alert.show(bundle.getString("invalidDate"),bundle.getString("bilirubinevaluation"))
+					return false;
+				}
+				if (dateExam.getDate()-dateBorn.getDate()>14*86400000) {
+					Alert.show(bundle.getString("tooOld"),bundle.getString("bilirubinevaluation"))
+					return false;
+				}
+				
+				
+				if (dateExam>new Date()) {
+					
+					Alert.show(bundle.getString("invalidExamDate"),bundle.getString("bilirubinevaluation"))
+					return false;
+				}
+				if ((isNaN(Number(bilivalue.text)))||(bilivalue.text=="")) {
+					Alert.show(bundle.getString("nullExam"),bundle.getString("bilirubinevaluation"))
+					return false;
+				}
+				if (isNaN(egCombo.selectedItem)) {
+					Alert.show(bundle.getString("invalidEG"),bundle.getString("bilirubinevaluation"))
+					return false;
+				}
+				
+				return true;
+			}
+			
+			public function dateDiffDayHour():String {
+				var diff:Number = calcHlife();
+				var hh:int=diff % 24;
+				var gg:int =diff/24;	
+				var hgString:String = gg.toString()+ bundle.getString("day")+" : "+hh.toString()+ bundle.getString("hour")
+				return hgString;
+			}
+			private function getUmis ():void{
+				umisLabel=String (umisCombo.selectedItem)
+				if (String (umisCombo.selectedItem).toLocaleLowerCase()=="mg/dl")
+					umis=Nomogram.MGDL
+				else
+					umis=Nomogram.MMOL
+			}
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				var nomogram:Nomogram = new Nomogram();
+				button2_clickHandler(new MouseEvent(MouseEvent.CLICK));
+				if (validate()) {
+					
+					getUmis();
+					eg=int (egCombo.selectedItem);
+					eValue=Number(bilivalue.text);
+					var res:int=nomogram.evaluate(eg, hLife,eValue, umis);
+					
+					switch(res)
+					{
+						
+						case Nomogram.NORMALVALUE:
+							resultText.text=bundle.getString("normal");
+							break;
+						case Nomogram.NONEVALUALBLE:
+							resultText.text=bundle.getString("noneval");
+							break;
+						case Nomogram.NORMALVALUE_3_6:
+							resultText.text=bundle.getString("phototerapy_6")+", "+bundle.getString("r3_6");
+							break;
+						case Nomogram.NORMALVALUE_6_12:
+							resultText.text=bundle.getString("normal")+", "+bundle.getString("r6_12");
+							break;
+						case Nomogram.PHOTOTHERAPY:
+							resultText.text=bundle.getString("phototerapy");
+							break;
+						case Nomogram.PHOTOTHERAPY_3_6:
+							resultText.text=bundle.getString("phototerapy")+", "+bundle.getString("r3_6");
+							break;
+						case Nomogram.PHOTOTHERAPY_6_12:
+							resultText.text=bundle.getString("phototerapy")+", "+bundle.getString("r6_12");	
+							break;
+						case Nomogram.EXCHANGETRANSFUSION:
+							resultText.text=bundle.getString("exanguino")
+							break;
+						default:
+							trace("Out of range");
+							break;
+						
+					}
+					var gr:ArrayCollection=new ArrayCollection();
+					generateGraph(gr)
+					var o:Object=gr.getItemAt(hLife);
+					o.examVal=eValue;
+					gr.setItemAt(o,hLife);
+					
+				}
+			}
+			
+			protected function examDate_clickHandler(event:Event):void
+			{
+				examDate.selectableRange={rangeStart:bornDate.selectedDate, rangeEnd:new Date()}
+				
+			}
+			
+			protected function button2_clickHandler(event:MouseEvent):void
+			{
+				hoursLife.text=calcHlife().toString();
+				monthHoursLife.text=dateDiffDayHour();
+				
+				
+			}
+			private function generateGraph(gr:ArrayCollection) {
+				var nomogram:Nomogram=new Nomogram();
+				var umisConv:Number;
+				getUmis();
+				if (umis==Nomogram.MMOL)
+					umisConv = 1;
+				else
+					umisConv = Nomogram.MMOL2MGDL;
+				
+				
+				gr=nomogram.getGraphValue(eg, umis, gr);
+				var dataSortField:SortField = new SortField();
+				dataSortField.name = "hLife";
+				dataSortField.numeric = true;
+				
+				var numericDataSort:Sort = new Sort();
+				numericDataSort.fields = [dataSortField];
+				
+				gr.sort=numericDataSort;
+				gr.refresh();
+				chartPanel.title = pazName.text+ " "+ bundle.getString("gestionalage")+": "+eg.toString();
+				linechart1.dataProvider=gr;
+				//catAxis.dataProvider=gr;
+				
+				
+			}
+			private function mmol2mgdl(ar:IAxisRenderer, strCMs:String):String {
+				var n:NumberFormatter = new NumberFormatter();
+				n.precision=1
+				return n.format((Number(strCMs)/Nomogram.MMOL2MGDL).toString());
+			}
+			private function hLableFuncionOld(ar:IAxisRenderer,strCMs:String):String {
+				
+				if (Number(strCMs)%24==0)
+					return (Number(strCMs)/24).toString();
+				else
+					return ""
+			}
+			
+			private function hLableFuncion(item:Object, prevValue:Object, axis:IAxis):String {
+				if (Number(item)%24==0)
+					return (Number(item)/24).toString();
+				else
+					return ""
+			}
+			
+			
+			
+			protected function egCombo_changeHandler(event:IndexChangeEvent):void
+			{
+				var gr:ArrayCollection=new ArrayCollection();
+				eg = int(egCombo.selectedItem);
+				generateGraph(gr)
+			}
+			
+		]]>
+	</fx:Script>
+	<s:VGroup width="100%" height="100%" gap="6">
+		<mx:ApplicationControlBar width="100%" height="48" borderVisible="true" chromeColor="#7D7D7D"
+								  contentBackgroundColor="#B4B4B4" cornerRadius="8"
+								  dropShadowVisible="true" paddingTop="10">
+			<s:Label width="100%" height="36"  color="#396BC6"
+					 fontFamily="Verdana" fontSize="22" fontStyle="italic" fontWeight="bold"
+					 paddingTop="5" text="{bundle.getString('app_name')}"
+					 textAlign="center" verticalAlign="middle"/>
+			
+		</mx:ApplicationControlBar>
+		
+		<s:HGroup x="1" y="1" width="100%" height="100%">
+			<s:VGroup x="1" y="1" width="379" height="100%">
+				<s:Form width="100%" height="300">
+					<s:FormItem label="{bundle.getString('pazname')}">
+						<s:layout> 
+							<s:HorizontalLayout/> 
+						</s:layout> 
+						<s:TextInput id="pazName" width="100%" editable="true" text="" textAlign="left"/>		
+					</s:FormItem>
+					<s:FormItem label="{bundle.getString('dateTimeBirth')}">
+						<s:layout> 
+							<s:HorizontalLayout/> 
+						</s:layout> 
+						<mx:DateField id="bornDate"/>
+						<s:ComboBox id="bornHour" width="40" dataProvider="{hourArray}"/>
+						<s:Label height="20" fontWeight="bold" paddingTop="7" text=":"/>
+						<s:ComboBox id="bornMin" width="40" dataProvider="{minArray}"/>
+					</s:FormItem>
+					<s:FormItem label="{bundle.getString('dateExam')}">
+						<s:layout> 
+							<s:HorizontalLayout/> 
+						</s:layout> 
+						<mx:DateField id="examDate" focusIn="examDate_clickHandler(event)"/>
+						<s:ComboBox id="examHour" width="40" dataProvider="{hourArray}"/>
+						<s:Label height="20" fontWeight="bold" paddingTop="7" text=":"/>
+						<s:ComboBox id="examMin" width="40" dataProvider="{minArray}"/>
+					</s:FormItem>
+					<s:FormItem width="100%" label="{bundle.getString('gestionalage')}">
+						<s:layout> 
+							<s:HorizontalLayout/> 
+						</s:layout> 
+						<s:ComboBox width="60" dataProvider="{egArray}" id="egCombo" change="egCombo_changeHandler(event)"/>
+					</s:FormItem>
+					<s:FormItem width="369" height="58" label="{bundle.getString('hourLife')}">
+						<s:layout> 
+							<s:HorizontalLayout paddingTop="10" verticalAlign="middle"/> 
+						</s:layout> 
+						<s:TextInput id="hoursLife" width="40" editable="false" text="" textAlign="left"/>
+						<s:TextInput id="monthHoursLife" width="80" editable="false" text="" textAlign="left"/>
+						<s:Button width="43" fontWeight="bold" icon="assets/calculator-icon.png" click="button2_clickHandler(event)"/>
+					</s:FormItem>
+					<s:FormItem label="{bundle.getString('examValue')}">
+						<s:layout> 
+							<s:HorizontalLayout/> 
+						</s:layout> 
+						<s:TextInput id="bilivalue" width="100%" borderVisible="true" editable="true"
+									 text=""/>
+						<s:ComboBox width="80" dataProvider="{umisArray}" selectedItem="mg/Dl" id="umisCombo" change="egCombo_changeHandler(event)"/>
+					</s:FormItem>
+				</s:Form>
+				<s:Group width="100%" height="50">
+					<s:Button width="94" height="31" label="{bundle.getString('verify')}" click="button1_clickHandler(event)"
+							  horizontalCenter="0" verticalCenter="0"/>
+				</s:Group>
+				<s:TextArea id="resultText" width="100%" height="70" editable="false"/>
+		<!--		<iframe:IFrame width="100%" height="200" source="{bannerContent}" >
+				</iframe:IFrame>-->
+			</s:VGroup>
+			<s:Panel id="chartPanel" width="80%" height="95%">
+				<s:layout>
+					<s:VerticalLayout/>
+				</s:layout>
+				<mx:LineChart id="linechart1" x="388" y="10" width="100%" height="90%"  showDataTips="true"
+							  >
+					<mx:backgroundElements>
+						<mx:GridLines gridDirection="both"/>
+					</mx:backgroundElements>
+					<mx:horizontalAxis >
+						<mx:LinearAxis title="{bundle.getString('hourlife')}" minimum="0" maximum="336"
+									   interval="24"  id="catAxis" labelFunction="hLableFuncion"/>
+						<!--<mx:CategoryAxis 
+						id="catAxis"
+						categoryField="hLife" 
+						/>-->
+					</mx:horizontalAxis>
+					<mx:horizontalAxisRenderers>
+						<mx:AxisRenderer 
+							axis="{catAxis}" 
+							canDropLabels="true"/>
+					</mx:horizontalAxisRenderers>
+					<mx:verticalAxis>
+						<mx:LinearAxis 
+							id="v1" 
+							title="{umisLabel}" 
+							baseAtZero="true"
+							/>
+					</mx:verticalAxis>
+					<mx:series>
+						<mx:LineSeries displayName="{bundle.getString('photoSeries')}" yField="fotoVal" >
+							
+						</mx:LineSeries>
+						<mx:LineSeries displayName="{bundle.getString('exchangeSeries')}" yField="exchangeVal">
+							
+						</mx:LineSeries>
+						<mx:PlotSeries displayName="{bundle.getString('examValue')}" yField="examVal"/>
+					</mx:series>
+				</mx:LineChart>
+				<mx:Legend x="414" y="582" dataProvider="{linechart1}" width="100%" direction="horizontal"/>
+			</s:Panel>
+		</s:HGroup>
+	</s:VGroup>
+</s:Application>
