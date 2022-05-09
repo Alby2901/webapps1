@@ -38,7 +38,8 @@ console.log("esameUnitMis= " + esameUnitMis);
 // const pazOraNasc = dateTemp.substring(8, 10); console.log("pazOraNasc=  " + pazOraNasc);
 // const pazMinNasc = dateTemp.substring(10, 12); console.log("pazMinNasc=  " + pazMinNasc);
 
-// Calcolo n. ore tra data nascita e data esame
+//
+// Calcola n. ore tra data nascita e data esame
 // converte i valori in oggetti "dayJS" per poi utilizzare la libreria per i calcoli
 // 
 const date1 = dayjs(pazDataNascCompl, "YYYYMMDDmmss")               // Date of birth get from Url param
@@ -99,5 +100,7 @@ function disGraf() {
     console.log('Siamo in "disGraf"'); alert('Siamo in "disGraf"');
     console.log("hour pre chiamata = " + document.getElementById('hourAfterBirth').value);
     console.log("Età gest pre chiamata = " + document.getElementById('pazEtaGest').value);
-    getValue(document.getElementById('pazEtaGest').value,document.getElementById('hourAfterBirth').value);
+    
+    console.log("Vettore punto= " + getValue(document.getElementById('pazEtaGest').value,
+                document.getElementById('hourAfterBirth').value));
 };

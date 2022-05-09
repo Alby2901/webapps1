@@ -12,12 +12,25 @@ function dateJsObj_2_DateTimeFieldString(date) {
 };
 
 //
+// Function to convert siero bilirubin value from mmol/dl to mg/dl
+//
+// function mmol2mgdl(ar: IAxisRenderer, strCMs: String): String {
+//     // var n: NumberFormatter = new NumberFormatter();
+//     // n.precision = 1
+//     // return n.format((Number(strCMs) / Nomogram.MMOL2MGDL).toString());
+//     return "pippo";
+// };
+
+//
 // Function to calc the value of the graph and the teraphy needed 
 //
-
 function getValue(ageGest, hourBirthExam) {
-
-    console.log("Parametro ageGest ricevuto = " + ageGest);
+    // console.log("Parametro ageGest ricevuto = " + ageGest);
+    // valuo of curves exept for gestional age 38
+    // first  -> y value for first point lower curve (x = 0)
+    // second -> y value for first point upper curve (x = 0)
+    // third  -> y value for second point lower curve (x = 3)
+    // fourth -> y value for second point upper curve (x = 3)
     const pointVal = [];
     pointVal[23] = ["40", "80", "130", "230"];
     pointVal[24] = ["40", "80", "140", "240"];
@@ -35,48 +48,58 @@ function getValue(ageGest, hourBirthExam) {
     pointVal[36] = ["40", "80", "260", "360"];
     pointVal[37] = ["40", "80", "270", "370"];
 
-    const arrVal = [];
+    let arrVal = [];      // value of y for lower and upper straight line at specific hour Birth-Exam
 
     if (ageGest == 38) {
-        arrVal = getValue38eg(hourBirthExam);
-        // }else{
-        //     var val:Array = values[eg.toString()];
-        //     //var arrVal:Array = new Number[2];
-        //     if (hLife <= 72) {
-        //         arrVal[0] = ((Number(val[2]) - Number(val[0])) / 72)
-        //             * hLife
-        //             + Number(val[0]);
-        //         arrVal[1] = ((Number(val[3]) - Number(val[1])) / 72)
-        //             * hLife
-        //             + Number(val[1]);
-        //     } else {
-
+        arrVal = getValue38eg(hourBirthExam); // specific calc for 38 gestiona age
     } else {
         // const val = pointVal[ageGest.toString()];
-        const val = [1,2,3,4];
+        const val = pointVal[ageGest.toString()]
         console.log("array val = " + val);
         console.log("Gest. Age = " + ageGest);
         console.log("pointVal[23] = " + pointVal[23]);
         console.log("pointVal[ageGest] = " + pointVal[ageGest]);
-        
 
-        // if (hourBirthExam <= 72) {
-        //     arrVal[0] = ((Number(val[2]) - Number(val[0])) / 72) * hourBirthExam + Number(val[0]);
-        //     arrVal[1] = ((Number(val[3]) - Number(val[1])) / 72) * hourBirthExam + Number(val[1]);
-        // } else {
-        //     arrVal[0] = Number(val[2]);
-        //     arrVal[1] = Number(val[3]);
-        //}
+        // calc (geometrically) of the y value for lower and upper straight line at specific hour Birth-Exam
+        // derive from: cal the equation of straight line passing for two points, then calc the y value
+        // for the x point lay on that straight line 
+        // these straight lines has one of the know point on the y axis (x = 0) 
+
+        if (hourBirthExam <= 72) {
+            // the first part of the curves is a straigth line oblique 
+            arrVal[0] = ((Number(val[2]) - Number(val[0])) / 72) * hourBirthExam + Number(val[0]);
+            arrVal[1] = ((Number(val[3]) - Number(val[1])) / 72) * hourBirthExam + Number(val[1]);
+        } else {
+            // the second part of the curves is a straigth line orizzontal
+            arrVal[0] = Number(val[2]); 
+            arrVal[1] = Number(val[3]);
+        }
     }
 
-    // return arrVal;
-    return "Pippo";
-
+    return arrVal;
 };
 
+//
+// The lowe curve at gestional age = 38 has 3 straight line part: first two are oblique and the third is orizzontal
+//
+function getValue38eg(hourBirthExam) {
 
-function getValue38eg(hLife) {
+    const arrVal = [];
+    // lower curve with 3 straight line parts
+    if (hourBirthExam <= 24) {
+        arrVal[0] = (((200 - 100) / 24) * hourBirthExam + 1) + 100;
+    } else if (hourBirthExam < 96) {
+        arrVal[0] = (((350 - 200) / 72) * (hourBirthExam - 23)) + 200;
+    } else if ((hourBirthExam >= 96) && (hourBirthExam <= 336)) {
+        arrVal[0] = 350;
+    }
+    
+    // upper  curve with 2 straight line parts
+    if (hourBirthExam <= 42) {
+        arrVal[1] = (((450 - 100) / 42) * hourBirthExam) + 100;
+    } else if ((hourBirthExam > 42) && (hourBirthExam <= 336)) {
+        arrVal[1] = 450;
+    }
 
-    console.log(hLife);
-
+    return arrVal;
 };
