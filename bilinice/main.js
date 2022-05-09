@@ -92,9 +92,12 @@ document.getElementById('dayHourAfterBirth').value = diffDayHour;
 //  functio to simulate a function call
 function calcolaValori() {
     console.log('Siamo in "calcola valori"'); alert('Siamo in "calcola valori"');
-}
+};
 
 //  functio to simulate a function call
 function disGraf() {
     console.log('Siamo in "disGraf"'); alert('Siamo in "disGraf"');
-}
+    console.log("hour pre chiamata = " + document.getElementById('hourAfterBirth').value);
+    console.log("Età gest pre chiamata = " + document.getElementById('pazEtaGest').value);
+    getValue(document.getElementById('pazEtaGest').value,document.getElementById('hourAfterBirth').value);
+};
