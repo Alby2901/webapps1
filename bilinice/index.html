@@ -250,12 +250,12 @@
                                 <td>
                                     <input type="text" class="form-control" id="totalSerumBili">
                                 </td>
-                                <td>
+                                <td colspan="2">
                                     <!-- <label for="pazOraNasc" class="form-label">ora</label> -->
-                                    <select id="pazEtaGest" class="form-select" aria-label="Gestional age">
+                                    <select id="examUnit" class="form-select" aria-label="Exam unit mesure">
                                         <option selected>Unit of measure</option>
-                                        <option value="0">mg/Dl</option>
-                                        <option value="1">mmol/dl</option>
+                                        <option value="mg/dl">mg/dl</option>
+                                        <option value="mmol/dl">mmol/dl</option>
                                     </select>
                                 </td>
                             </tr>
@@ -263,12 +263,12 @@
                     </table>
                 </form>
 
-                </p><button type="button" class="btn btn-outline-primary" onclick="disGraf()">Mostra grafico</button>
+                </p><button type="button" class="btn btn-outline-primary" onclick="onClickBtnShowGraph()">Mostra grafico</button>
 
             </aside>
             <main id="maincontent" class="col-6">
                 <div id="main" style="width: 600px;height:400px;"></div>
-                <script type="text/javascript" src="graficolinearenew.js"></script>
+                <!-- <script type="text/javascript" src="graficolinearenew.js"></script> -->
             </main>
         </div>
     </div>

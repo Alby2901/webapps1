@@ -1,13 +1,40 @@
 'use strict'
 
-//
+//----------------------------------------------
 // Function to conver objet dateJS to string for set value of data-time field
 //
 function dateJsObj_2_DateTimeFieldString(date) {
 
     if (!date) return dayjs(date).format('YYYY-MM-DD') + "T" + dayjs(date).format('HH') + ":" + dayjs(date).format('mm');
 
-    return dayjs(date1).format('YYYY-MM-DD') + "T" + dayjs(date1).format('HH') + ":" + dayjs(date1).format('mm');
+    return dayjs(date).format('YYYY-MM-DD') + "T" + dayjs(date).format('HH') + ":" + dayjs(date).format('mm');
+
+};
+
+// --------------------------------------------
+// Calc n. hours from birth date and exam date
+// converte i valori in oggetti "dayJS" per poi utilizzare la libreria per i calcoli
+// 
+function calcHourBirthExam(pazDataNascCompl, examDate) {
+    const date1 = dayjs(pazDataNascCompl, "YYYYMMDDmmss")               // Date of birth get from Url param
+    const date2 = dayjs(examDate);                                              // Date of exam: default to "now"
+    const dt1Dt2Diff = date2.diff(date1, 'day', true)                   // calculate date diff in days (float)
+    const diffDay = Math.round(dt1Dt2Diff);                             // calculate date diff in days (round)
+    const hourBirthExam = Math.round(date2.diff(date1, 'hour', true));  // calculate hours diff in hours (float then round)
+    return hourBirthExam
+};
+
+//---------------------------------------------
+// calc diffDayHour to show in corrispondent field "<days>d <hours>h" --> <trunc(diffDay)> d <round(diffDay - trunc(diffDay)) * 24> h
+//
+function calcDiffDayHour(date1, date2) {
+
+    const diffDayFloat = date2.diff(date1, 'day', true);
+    const diffDaytrunc = date2.diff(date1, 'day', false);
+    const diffDayDecimalPart = diffDayFloat - diffDaytrunc;
+    const hourRoundOfDiffDaysDecimalPart = Math.round(diffDayDecimalPart * 24);
+    const diffDayHour = diffDaytrunc + "d " + hourRoundOfDiffDaysDecimalPart + "h";
+    return diffDayHour;
 
 };
 
@@ -21,7 +48,7 @@ function dateJsObj_2_DateTimeFieldString(date) {
 //     return "pippo";
 // };
 
-//
+//----------------------------------------------
 // Function to calc the value of the graph and the teraphy needed 
 //
 function getValue(ageGest, hourBirthExam) {
@@ -49,12 +76,14 @@ function getValue(ageGest, hourBirthExam) {
     pointVal[37] = ["40", "80", "270", "370"];
 
     let arrVal = [];      // value of y for lower and upper straight line at specific hour Birth-Exam
+    const val = pointVal[ageGest.toString()];
+    const result = [];
 
     if (ageGest == 38) {
         arrVal = getValue38eg(hourBirthExam); // specific calc for 38 gestiona age
     } else {
         // const val = pointVal[ageGest.toString()];
-        const val = pointVal[ageGest.toString()]
+
         console.log("array val = " + val);
         console.log("Gest. Age = " + ageGest);
         console.log("pointVal[23] = " + pointVal[23]);
@@ -71,15 +100,17 @@ function getValue(ageGest, hourBirthExam) {
             arrVal[1] = ((Number(val[3]) - Number(val[1])) / 72) * hourBirthExam + Number(val[1]);
         } else {
             // the second part of the curves is a straigth line orizzontal
-            arrVal[0] = Number(val[2]); 
+            arrVal[0] = Number(val[2]);
             arrVal[1] = Number(val[3]);
         }
     }
 
-    return arrVal;
+    // result = val.concat(arrVal);
+    // console.log("result= " + result);
+    return val.concat(arrVal);
 };
 
-//
+//----------------------------------------------
 // The lowe curve at gestional age = 38 has 3 straight line part: first two are oblique and the third is orizzontal
 //
 function getValue38eg(hourBirthExam) {
@@ -93,7 +124,7 @@ function getValue38eg(hourBirthExam) {
     } else if ((hourBirthExam >= 96) && (hourBirthExam <= 336)) {
         arrVal[0] = 350;
     }
-    
+
     // upper  curve with 2 straight line parts
     if (hourBirthExam <= 42) {
         arrVal[1] = (((450 - 100) / 42) * hourBirthExam) + 100;
@@ -102,4 +133,76 @@ function getValue38eg(hourBirthExam) {
     }
 
     return arrVal;
+};
+
+//----------------------------------------------
+// Funcion to draw draph with EGraph library
+//
+function drawGraphic() {
+    var myChart = echarts.init(document.getElementById('main'));
+    var option = {
+        // title: {
+        //   text: 'grafico bilirubina nice'
+        // },
+        xAxis: {
+            data: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14']
+        },
+        yAxis: {},
+        series: [
+            {
+                data: [
+                    [0, 40],
+                    [3, 130],
+                    [14, 130]
+                ],
+                showSymbol: false,
+                type: 'line'
+            },
+            {
+                data: [
+                    [0, 80],
+                    [3, 230],
+                    [14, 230]
+                ],
+                showSymbol: false,
+                type: 'line'
+            },
+            {
+                data: [
+                    [5, 160]
+                ],
+                type: 'scatter',
+                color: 'red'
+            },
+
+        ]
+    };
+
+    // Display the chart using the configuration items and data just specified.
+    myChart.setOption(option);
+};
+
+//----------------------------------------------
+//  functio to simulate and chack function call
+//
+function calcolaValori() {
+    console.log('Siamo in "calcola valori"'); alert('Siamo in "calcola valori"');
+    const date1 = document.getElementById('DayTimeofBirth').value
+    const date2 = document.getElementById('DayTimeofExam').value
+    console.log('date1 in calc val= '+ date1);
+    console.log('date1 in calc val= '+ date1); 
+    document.getElementById('hourAfterBirth').value = calcHourBirthExam(date1, date2);
+
+};
+
+//----------------------------------------------
+//  function to draw graph
+//
+function onClickBtnShowGraph() {
+    console.log('Siamo in "disGraf"'); alert('Siamo in "disGraf"');
+    console.log("hour pre chiamata = " + document.getElementById('hourAfterBirth').value);
+    console.log("Età gest pre chiamata = " + document.getElementById('pazEtaGest').value);
+    console.log("Vettore punto= " + getValue(document.getElementById('pazEtaGest').value,
+        document.getElementById('hourAfterBirth').value));
+    drawGraphic();
 };
