@@ -157,8 +157,9 @@ function drawGraphic(dataLinesGraph, hourAfterBirth) {
             minorTick: {
                 show: true
               },
-            name: 'Pippo',
+            name: 'Day of Life',
             nameLocation: 'middle',
+            vertticalAlign: 'bottom',
             nameTextStyle: {
                 fontWeight: 'bold',
                 // verticalAlign: 'bottom'   
@@ -227,11 +228,17 @@ function onClickBtnShowGraph() {
     // console.log('Siamo in "disGraf"'); alert('Siamo in "disGraf"');
     const hourAfterBirth = document.getElementById('hourAfterBirth').value;
     const pazEtaGest = document.getElementById('pazEtaGest').value;
+    let totalSerumBili = document.getElementById('totalSerumBili').value;
+    console.log("Bilirubina totale = " + totalSerumBili);
+    const examUnit = document.getElementById('examUnit').value;
+    if (examUnit === 'mg/dl') {totalSerumBili = totalSerumBili * MMOL2MGDL};
     const dataLinesGraph = getValue(pazEtaGest,hourAfterBirth);
 
 
     console.log("hour pre chiamata = " + hourAfterBirth);
     console.log("Età gest pre chiamata = " + pazEtaGest);
+    console.log("Bilirubina totale = " + totalSerumBili);
+    console.log("Unità di misura = " + examUnit);
     console.log("Array data graph= " + dataLinesGraph);
     drawGraphic(dataLinesGraph, hourAfterBirth);
 };

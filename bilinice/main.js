@@ -1,5 +1,7 @@
 'use strict'
 
+const MMOL2MGDL = 17.09;
+
 //---------------------------------------------
 // leggere i parametri dall'Url Sotto esempio di set di parametri
 // ?lang=IT & paznome=SELEN & pazcogn=PELLETTERI & pazdnas=202205021321 & pazeg=35 & examumis=mg%2fdl
