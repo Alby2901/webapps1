@@ -86,7 +86,7 @@ function getValue(ageGest, hourBirthExam) {
 
         console.log("array val = " + val);
         console.log("Gest. Age = " + ageGest);
-        console.log("pointVal[23] = " + pointVal[23]);
+        // console.log("pointVal[23] = " + pointVal[23]);
         console.log("pointVal[ageGest] = " + pointVal[ageGest]);
 
         // calc (geometrically) of the y value for lower and upper straight line at specific hour Birth-Exam
@@ -138,41 +138,66 @@ function getValue38eg(hourBirthExam) {
 //----------------------------------------------
 // Funcion to draw draph with EGraph library
 //
-function drawGraphic() {
+function drawGraphic(dataLinesGraph, hourAfterBirth) {
+    const data = dataLinesGraph;
+    const dayAfterBirth = Math.round(hourAfterBirth/24*100)/100;
+    
+    console.log('data = ' + data);
+    console.log('hourAfterBirth = ' + hourAfterBirth);
+    console.log('dayAfterBirth= ' + dayAfterBirth);
+    
     var myChart = echarts.init(document.getElementById('main'));
     var option = {
         // title: {
         //   text: 'grafico bilirubina nice'
         // },
         xAxis: {
-            data: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14']
+            // data: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14']
+            
+            minorTick: {
+                show: true
+              },
+            name: 'Pippo',
+            nameLocation: 'middle',
+            nameTextStyle: {
+                fontWeight: 'bold',
+                // verticalAlign: 'bottom'   
+              },
+            interval: 1
         },
         yAxis: {},
         series: [
             {
                 data: [
-                    [0, 40],
-                    [3, 130],
-                    [14, 130]
+                    [0, data[0]],
+                    [3, data[2]],
+                    [14, data[2]]
                 ],
                 showSymbol: false,
                 type: 'line'
             },
             {
                 data: [
-                    [0, 80],
-                    [3, 230],
-                    [14, 230]
+                    [0, data[1]],
+                    [3, data[3]],
+                    [14, data[3]]
                 ],
                 showSymbol: false,
                 type: 'line'
             },
             {
                 data: [
-                    [5, 160]
+                    [dayAfterBirth, data[4]]
                 ],
                 type: 'scatter',
                 color: 'red'
+            },
+            {
+                data: [
+                    [dayAfterBirth, data[5]]
+                ],
+                type: 'scatter',
+                color: 'blue'
             },
 
         ]
@@ -199,10 +224,14 @@ function calcolaValori() {
 //  function to draw graph
 //
 function onClickBtnShowGraph() {
-    console.log('Siamo in "disGraf"'); alert('Siamo in "disGraf"');
-    console.log("hour pre chiamata = " + document.getElementById('hourAfterBirth').value);
-    console.log("Età gest pre chiamata = " + document.getElementById('pazEtaGest').value);
-    console.log("Vettore punto= " + getValue(document.getElementById('pazEtaGest').value,
-        document.getElementById('hourAfterBirth').value));
-    drawGraphic();
+    // console.log('Siamo in "disGraf"'); alert('Siamo in "disGraf"');
+    const hourAfterBirth = document.getElementById('hourAfterBirth').value;
+    const pazEtaGest = document.getElementById('pazEtaGest').value;
+    const dataLinesGraph = getValue(pazEtaGest,hourAfterBirth);
+
+
+    console.log("hour pre chiamata = " + hourAfterBirth);
+    console.log("Età gest pre chiamata = " + pazEtaGest);
+    console.log("Array data graph= " + dataLinesGraph);
+    drawGraphic(dataLinesGraph, hourAfterBirth);
 };
