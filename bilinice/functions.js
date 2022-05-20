@@ -3,10 +3,13 @@
 //----------------------------------------------
 // Function to conver objet dateJS to string for set value of data-time field
 //
+// If date is empty return the string of current date
+//
 function dateJsObj_2_DateTimeFieldString(date) {
 
-    if (!date) return dayjs(date).format('YYYY-MM-DD') + "T" + dayjs(date).format('HH') + ":" + dayjs(date).format('mm');
-
+    // "if" is NOT NECESSARY
+    //if (!date) return dayjs(date).format('YYYY-MM-DD') + "T" + dayjs(date).format('HH') + ":" + dayjs(date).format('mm');
+    
     return dayjs(date).format('YYYY-MM-DD') + "T" + dayjs(date).format('HH') + ":" + dayjs(date).format('mm');
 
 };
@@ -17,7 +20,7 @@ function dateJsObj_2_DateTimeFieldString(date) {
 // 
 function calcHourBirthExam(pazDataNascCompl, examDate) {
     const date1 = dayjs(pazDataNascCompl, "YYYYMMDDmmss")               // Date of birth get from Url param
-    const date2 = dayjs(examDate);                                              // Date of exam: default to "now"
+    const date2 = dayjs(examDate);                                      // Date of exam: default to "now"
     const dt1Dt2Diff = date2.diff(date1, 'day', true)                   // calculate date diff in days (float)
     const diffDay = Math.round(dt1Dt2Diff);                             // calculate date diff in days (round)
     const hourBirthExam = Math.round(date2.diff(date1, 'hour', true));  // calculate hours diff in hours (float then round)
@@ -27,10 +30,16 @@ function calcHourBirthExam(pazDataNascCompl, examDate) {
 //---------------------------------------------
 // calc diffDayHour to show in corrispondent field "<days>d <hours>h" --> <trunc(diffDay)> d <round(diffDay - trunc(diffDay)) * 24> h
 //
+// date1 = data in string format yyyymmddhhmm 
+// date2 = dayjs() obj
+//
 function calcDiffDayHour(date1, date2) {
 
-    const diffDayFloat = date2.diff(date1, 'day', true);
-    const diffDaytrunc = date2.diff(date1, 'day', false);
+    console.log("DataOdierna= " + dayjs());
+    const date1temp = dayjs(date1, "YYYYMMDDmmss");
+    const date2temp = dayjs(date2);
+    const diffDayFloat = date2temp.diff(date1temp, 'day', true);
+    const diffDaytrunc = date2temp.diff(date1temp, 'day', false);
     const diffDayDecimalPart = diffDayFloat - diffDaytrunc;
     const hourRoundOfDiffDaysDecimalPart = Math.round(diffDayDecimalPart * 24);
     const diffDayHour = diffDaytrunc + "d " + hourRoundOfDiffDaysDecimalPart + "h";
@@ -140,12 +149,12 @@ function getValue38eg(hourBirthExam) {
 //
 function drawGraphic(dataLinesGraph, hourAfterBirth) {
     const data = dataLinesGraph;
-    const dayAfterBirth = Math.round(hourAfterBirth/24*100)/100;
-    
+    const dayAfterBirth = Math.round(hourAfterBirth / 24 * 100) / 100;
+
     console.log('data = ' + data);
     console.log('hourAfterBirth = ' + hourAfterBirth);
     console.log('dayAfterBirth= ' + dayAfterBirth);
-    
+
     var myChart = echarts.init(document.getElementById('main'));
     var option = {
         // title: {
@@ -153,17 +162,17 @@ function drawGraphic(dataLinesGraph, hourAfterBirth) {
         // },
         xAxis: {
             // data: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14']
-            
+
             minorTick: {
                 show: true
-              },
+            },
             name: 'Day of Life',
             nameLocation: 'middle',
             vertticalAlign: 'bottom',
             nameTextStyle: {
                 fontWeight: 'bold',
                 // verticalAlign: 'bottom'   
-              },
+            },
             interval: 1
         },
         yAxis: {},
@@ -212,12 +221,13 @@ function drawGraphic(dataLinesGraph, hourAfterBirth) {
 //  functio to simulate and chack function call
 //
 function calcolaValori() {
-    console.log('Siamo in "calcola valori"'); alert('Siamo in "calcola valori"');
+    // console.log('Siamo in "calcola valori"'); alert('Siamo in "calcola valori"');
     const date1 = document.getElementById('DayTimeofBirth').value
     const date2 = document.getElementById('DayTimeofExam').value
-    console.log('date1 in calc val= '+ date1);
-    console.log('date1 in calc val= '+ date1); 
+    console.log('date1 in calc val= ' + date1);
+    console.log('date1 in calc val= ' + date1);
     document.getElementById('hourAfterBirth').value = calcHourBirthExam(date1, date2);
+    document.getElementById('dayHourAfterBirth').value = calcDiffDayHour(date1, date2);
 
 };
 
@@ -231,8 +241,8 @@ function onClickBtnShowGraph() {
     let totalSerumBili = document.getElementById('totalSerumBili').value;
     console.log("Bilirubina totale = " + totalSerumBili);
     const examUnit = document.getElementById('examUnit').value;
-    if (examUnit === 'mg/dl') {totalSerumBili = totalSerumBili * MMOL2MGDL};
-    const dataLinesGraph = getValue(pazEtaGest,hourAfterBirth);
+    if (examUnit === 'mg/dl') { totalSerumBili = totalSerumBili * MMOL2MGDL };
+    const dataLinesGraph = getValue(pazEtaGest, hourAfterBirth);
 
 
     console.log("hour pre chiamata = " + hourAfterBirth);

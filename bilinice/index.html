@@ -47,6 +47,7 @@
 
     <div id="container" class="container-fluid">
         <div class="row">
+            <!-- left side for data and button -->
             <aside class="col-6">
                 <form>
                     <table>
@@ -216,7 +217,7 @@
                                     </select>
                                 </td>
                             </tr>
-                            <!-- hour after Birth -->
+                            <!-- hour after Birth and calc button -->
                             <tr>
                                 <td>
                                     Hour after birth:
@@ -259,13 +260,24 @@
                                     </select>
                                 </td>
                             </tr>
+                            <!-- Result -->
+                            <tr>
+                                <td>
+                                    Result:
+                                </td>
+                                <td colspan="3">
+                                    <textarea class="form-control" id="result" rows="3" cols="30"></textarea>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </form>
-
-                </p><button type="button" class="btn btn-outline-primary" onclick="onClickBtnShowGraph()">Mostra grafico</button>
+                <!-- Button to calc result and show graph -->
+                </p><button type="button" class="btn btn-outline-primary" onclick="onClickBtnShowGraph()">
+                    Show graph and results</button>
 
             </aside>
+            <!-- space for graph -->
             <main id="maincontent" class="col-6">
                 <div id="main" style="width: 600px;height:400px;"></div>
                 <!-- <script type="text/javascript" src="graficolinearenew.js"></script> -->

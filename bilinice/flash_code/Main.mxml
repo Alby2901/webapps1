@@ -60,12 +60,11 @@
 				"30","31","32","33","34","35","36","37","38"]);
 			[Bindable]
 			private var umisArray:ArrayCollection	= new ArrayCollection (["mmol/dl","mg/dl"]);
-			protected function application1_preinitializeHandler(event:FlexEvent):void
-			{
+			
+			protected function application1_preinitializeHandler(event:FlexEvent):void{
 				//				
 			}
-			protected function creationCompleteHandler(event:FlexEvent):void
-			{
+			protected function creationCompleteHandler(event:FlexEvent):void{
 				//var pazName:String;
 				var pazCode:String;
 				var pazDnas:String;
@@ -154,10 +153,6 @@
 				
 				
 			}
-			
-			
-			
-			
 			private function calcHlife():int{
 				var diff:Number
 				dateBorn=bornDate.selectedDate
@@ -172,8 +167,7 @@
 					diff = (dateBorn.getTime() - dateExam.getTime()) / (1000 * 60 * 60 );
 				hLife=diff;
 				return diff;
-			}
-			
+			}			
 			private function validate():Boolean {
 				if (dateBorn>dateExam) {
 					Alert.show(bundle.getString("invalidDate"),bundle.getString("bilirubinevaluation"))
@@ -200,8 +194,7 @@
 				}
 				
 				return true;
-			}
-			
+			}			
 			public function dateDiffDayHour():String {
 				var diff:Number = calcHlife();
 				var hh:int=diff % 24;
@@ -216,8 +209,7 @@
 				else
 					umis=Nomogram.MMOL
 			}
-			protected function button1_clickHandler(event:MouseEvent):void
-			{
+			protected function button1_clickHandler(event:MouseEvent):void{
 				var nomogram:Nomogram = new Nomogram();
 				button2_clickHandler(new MouseEvent(MouseEvent.CLICK));
 				if (validate()) {
@@ -266,16 +258,12 @@
 					gr.setItemAt(o,hLife);
 					
 				}
-			}
-			
-			protected function examDate_clickHandler(event:Event):void
-			{
+			}	
+			protected function examDate_clickHandler(event:Event):void{
 				examDate.selectableRange={rangeStart:bornDate.selectedDate, rangeEnd:new Date()}
 				
-			}
-			
-			protected function button2_clickHandler(event:MouseEvent):void
-			{
+			}		
+			protected function button2_clickHandler(event:MouseEvent):void{
 				hoursLife.text=calcHlife().toString();
 				monthHoursLife.text=dateDiffDayHour();
 				
@@ -318,19 +306,14 @@
 					return (Number(strCMs)/24).toString();
 				else
 					return ""
-			}
-			
+			}			
 			private function hLableFuncion(item:Object, prevValue:Object, axis:IAxis):String {
 				if (Number(item)%24==0)
 					return (Number(item)/24).toString();
 				else
 					return ""
-			}
-			
-			
-			
-			protected function egCombo_changeHandler(event:IndexChangeEvent):void
-			{
+			}				
+			protected function egCombo_changeHandler(event:IndexChangeEvent):void{
 				var gr:ArrayCollection=new ArrayCollection();
 				eg = int(egCombo.selectedItem);
 				generateGraph(gr)

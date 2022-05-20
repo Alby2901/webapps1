@@ -66,15 +66,21 @@ const diffDayHour = calcDiffDayHour(pazDataNascCompl,dayjs());
 
 //----------------------------------------------
 // calculate string of birth date for set value in the HTML form data-time field 
-const dateField1 = dayjs(pazDataNascCompl, "YYYYMMDDmmss")
-const dateTimeFieldStrDateofBirth = dayjs(dateField1).format('YYYY-MM-DD') + "T" + dayjs(dateField1).format('HH') + ":" + dayjs(dateField1).format('mm');
-const dateTimeFieldStrDateofBirth2 = dateJsObj_2_DateTimeFieldString(dateField1);
+//
+// const dateField1 = dayjs(pazDataNascCompl, "YYYYMMDDmmss")
+// const dateTimeFieldStrDateofBirth = dayjs(dateField1).format('YYYY-MM-DD') + "T" + dayjs(dateField1).format('HH') + ":" + dayjs(dateField1).format('mm');
+// const dateTimeFieldStrDateofBirth = dateJsObj_2_DateTimeFieldString(dateField1);
+
+const dateTimeFieldStrDateofBirth = dateJsObj_2_DateTimeFieldString(dayjs(pazDataNascCompl, "YYYYMMDDmmss"));
+
 
 //----------------------------------------------
 // calculate string of exam date for HTML form data-time field
-const dateField2 = dayjs();
-const dateTimeFieldStrDateofExam = dayjs(dateField2).format('YYYY-MM-DD') + "T" + dayjs(dateField2).format('HH') + ":" + dayjs(dateField2).format('mm');
-const dateTimeFieldStrDateofExam2 = dateJsObj_2_DateTimeFieldString(dateField2);
+// const dateField2 = dayjs();
+// const dateTimeFieldStrDateofExam = dayjs(dateField2).format('YYYY-MM-DD') + "T" + dayjs(dateField2).format('HH') + ":" + dayjs(dateField2).format('mm');
+// const dateTimeFieldStrDateofExam2 = dateJsObj_2_DateTimeFieldString(dateField2);
+
+const dateTimeFieldStrDateofExam = dateJsObj_2_DateTimeFieldString(dayjs());
 
 // // Show in console calculated value  (will be commented out)
 // console.log("date and time 1= " + dateTimeFieldStrDateofBirth);
@@ -86,14 +92,21 @@ const dateTimeFieldStrDateofExam2 = dateJsObj_2_DateTimeFieldString(dateField2);
 // Set inizial value in HTML form fields
 //
 document.getElementById('pazCognNom').value = pazCognome + " " + pazNome;
+document.getElementById('pazEtaGest').value = pazEtaGest;
+document.getElementById('hourAfterBirth').value = hourBirthExam;
+document.getElementById('dayHourAfterBirth').value = diffDayHour;
+document.getElementById('examUnit').value = esameUnitMis;
+
 //document.getElementById('pazDataNasc').value = pazDataNasc;   // used before date-time field  wil be avaiable
 //document.getElementById('pazOraNasc').value = pazOraNasc;     // used before date-time field  wil be avaiable
 //document.getElementById('pazMinNasc').value = pazMinNasc;     // used before date-time field  wil be avaiable
-document.getElementById('pazEtaGest').value = pazEtaGest;
 document.getElementById('DayTimeofBirth').value = dateTimeFieldStrDateofBirth;
 document.getElementById('DayTimeofBirth').min = dateTimeFieldStrDateofBirth;
 document.getElementById('DayTimeofExam').value = dateTimeFieldStrDateofExam;
 document.getElementById('DayTimeofExam').min = dateTimeFieldStrDateofBirth;
-document.getElementById('hourAfterBirth').value = hourBirthExam;
-document.getElementById('dayHourAfterBirth').value = diffDayHour;
-document.getElementById('examUnit').value = esameUnitMis;
+
+document.getElementById('pazCognNom').disabled = true;
+document.getElementById('DayTimeofBirth').disabled = true;
+document.getElementById('hourAfterBirth').disabled = true;
+document.getElementById('dayHourAfterBirth').disabled = true;
+
