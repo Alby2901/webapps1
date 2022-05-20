@@ -1,5 +1,19 @@
 'use strict'
 
+const NONEVALUALBLE = 0;
+const NORMALVALUE = 1;
+const NORMALVALUE_3_6 = 136;
+const NORMALVALUE_6_12 = 1612;
+const PHOTOTHERAPY = 2;
+const PHOTOTHERAPY_3_6 = 236;
+const PHOTOTHERAPY_6_12 = 2612;
+const EXCHANGETRANSFUSION = 3;
+const EXCHANGETRANSFUSION_3_6 = 336;
+const EXCHANGETRANSFUSION_6_12 = 3612;
+const MGDL = "mg";
+const MMOL = "mmol";
+const TOLLERANCE_0_6 = 0.05;
+const TOLLERANCE_6_12 = 0.10;
 const MMOL2MGDL = 17.09;
 
 //---------------------------------------------
@@ -7,7 +21,11 @@ const MMOL2MGDL = 17.09;
 // ?lang=IT & paznome=SELEN & pazcogn=PELLETTERI & pazdnas=202205021321 & pazeg=35 & examumis=mg%2fdl
 //
 // legge la stringa dei parametri nell'url incluso il ?
-const queryString = window.location.search;
+let queryString = window.location.search;
+
+if (!queryString)
+{queryString="?lang=IT&paznome=SELEN&pazcogn=PELLETTERI&pazdnas=202205021321&pazeg=35&examumis=mg%2fdl"};
+
 const urlParams = new URLSearchParams(queryString);
 
 // --------------------------------------------

@@ -1,8 +1,8 @@
 'use strict'
 
 //----------------------------------------------
-// Function to conver objet dateJS to string for set value of data-time field
-//
+// Function to conver objet dateJS to string for set value of data-time field: "YYYY-MM-DDTHH:MM" -> example: "2022-05-20T20:58"
+// date is a dayJS object
 // If date is empty return the string of current date
 //
 function dateJsObj_2_DateTimeFieldString(date) {
@@ -16,13 +16,15 @@ function dateJsObj_2_DateTimeFieldString(date) {
 
 // --------------------------------------------
 // Calc n. hours from birth date and exam date
-// converte i valori in oggetti "dayJS" per poi utilizzare la libreria per i calcoli
 // 
-function calcHourBirthExam(pazDataNascCompl, examDate) {
-    const date1 = dayjs(pazDataNascCompl, "YYYYMMDDmmss")               // Date of birth get from Url param
-    const date2 = dayjs(examDate);                                      // Date of exam: default to "now"
-    const dt1Dt2Diff = date2.diff(date1, 'day', true)                   // calculate date diff in days (float)
-    const diffDay = Math.round(dt1Dt2Diff);                             // calculate date diff in days (round)
+// stringDate -> date in string format: "YYYYMMGGHHMM"
+// objDatejs  -> date in obj dayJS format
+// 
+function calcHourBirthExam(stringDate, objDatejs) {
+    const date1 = dayjs(stringDate, "YYYYMMDDmmss")                     // convert date in dayJS obj
+    const date2 = dayjs(objDatejs);                                     // convert date in dayJS obj (may not necessary)
+    // const dt1Dt2Diff = date2.diff(date1, 'day', true)                // calculate date diff in days (float)
+    // const diffDay = Math.round(dt1Dt2Diff);                          // calculate date diff in days (round)
     const hourBirthExam = Math.round(date2.diff(date1, 'hour', true));  // calculate hours diff in hours (float then round)
     return hourBirthExam
 };
@@ -35,7 +37,7 @@ function calcHourBirthExam(pazDataNascCompl, examDate) {
 //
 function calcDiffDayHour(date1, date2) {
 
-    console.log("DataOdierna= " + dayjs());
+    // console.log("DataOdierna= " + dayjs());
     const date1temp = dayjs(date1, "YYYYMMDDmmss");
     const date2temp = dayjs(date2);
     const diffDayFloat = date2temp.diff(date1temp, 'day', true);
@@ -93,10 +95,10 @@ function getValue(ageGest, hourBirthExam) {
     } else {
         // const val = pointVal[ageGest.toString()];
 
-        console.log("array val = " + val);
-        console.log("Gest. Age = " + ageGest);
+        // console.log("array val = " + val);
+        // console.log("Gest. Age = " + ageGest);
         // console.log("pointVal[23] = " + pointVal[23]);
-        console.log("pointVal[ageGest] = " + pointVal[ageGest]);
+        // console.log("pointVal[ageGest] = " + pointVal[ageGest]);
 
         // calc (geometrically) of the y value for lower and upper straight line at specific hour Birth-Exam
         // derive from: cal the equation of straight line passing for two points, then calc the y value
@@ -120,7 +122,7 @@ function getValue(ageGest, hourBirthExam) {
 };
 
 //----------------------------------------------
-// The lowe curve at gestional age = 38 has 3 straight line part: first two are oblique and the third is orizzontal
+// The lower curve at gestional age = 38 has 3 straight line part: first two are oblique and the third is orizzontal
 //
 function getValue38eg(hourBirthExam) {
 
@@ -145,15 +147,15 @@ function getValue38eg(hourBirthExam) {
 };
 
 //----------------------------------------------
-// Funcion to draw draph with EGraph library
+// Funcion to draw draph with EGraphs library
 //
-function drawGraphic(dataLinesGraph, hourAfterBirth) {
+function drawGraphic(dataLinesGraph, hourAfterBirth, totalSerumBili) {
     const data = dataLinesGraph;
     const dayAfterBirth = Math.round(hourAfterBirth / 24 * 100) / 100;
 
-    console.log('data = ' + data);
-    console.log('hourAfterBirth = ' + hourAfterBirth);
-    console.log('dayAfterBirth= ' + dayAfterBirth);
+    // console.log('data = ' + data);
+    // console.log('hourAfterBirth = ' + hourAfterBirth);
+    // console.log('dayAfterBirth= ' + dayAfterBirth);
 
     var myChart = echarts.init(document.getElementById('main'));
     var option = {
@@ -184,7 +186,8 @@ function drawGraphic(dataLinesGraph, hourAfterBirth) {
                     [14, data[2]]
                 ],
                 showSymbol: false,
-                type: 'line'
+                type: 'line',
+                color: 'blue',
             },
             {
                 data: [
@@ -193,21 +196,29 @@ function drawGraphic(dataLinesGraph, hourAfterBirth) {
                     [14, data[3]]
                 ],
                 showSymbol: false,
-                type: 'line'
+                type: 'line',
+                color: 'red',
             },
             {
                 data: [
                     [dayAfterBirth, data[4]]
                 ],
                 type: 'scatter',
-                color: 'red'
+                color: 'blue',
             },
             {
                 data: [
                     [dayAfterBirth, data[5]]
                 ],
                 type: 'scatter',
-                color: 'blue'
+                color: 'red',
+            },
+            {
+                data: [
+                    [dayAfterBirth, totalSerumBili]
+                ],
+                type: 'scatter',
+                color: 'green',
             },
 
         ]
@@ -232,6 +243,71 @@ function calcolaValori() {
 };
 
 //----------------------------------------------
+//  function calc numeric result
+//
+function evaluate(ageGest, hourBirthExam, totalSerumBili, examUnit) {
+
+    console.log("siamo in evaluate");
+
+    let evaluation = 0;
+    let arrVal = [];
+
+    // if (examUnit == 'mg/dl') { totalSerumBili = totalSerumBili * MMOL2MGDL; }
+
+    if ((ageGest <= 38) && (ageGest >= 23)) {
+        console.log("Check 01!");
+        arrVal = getValue(ageGest, hourBirthExam);
+        console.log("Check 02! ArrValori= " + arrVal);
+        if (totalSerumBili < arrVal[4])
+            if (totalSerumBili + totalSerumBili * TOLLERANCE_0_6 >= arrVal[4])
+                return NORMALVALUE_3_6;
+            else if (totalSerumBili + totalSerumBili * TOLLERANCE_6_12 >= arrVal[4])
+                return NORMALVALUE_6_12;
+            else
+                return NORMALVALUE;
+
+        if ((totalSerumBili >= arrVal[4]) && totalSerumBili <= arrVal[5])
+
+            if (totalSerumBili + totalSerumBili * TOLLERANCE_0_6 >= arrVal[5])
+                return PHOTOTHERAPY_3_6;
+            else if (totalSerumBili + totalSerumBili * TOLLERANCE_6_12 >= arrVal[5])
+                return PHOTOTHERAPY_6_12;
+            else
+                return PHOTOTHERAPY;
+
+        if ((totalSerumBili > arrVal[5]))
+            return EXCHANGETRANSFUSION;
+    } else {
+        evaluation = NONEVALUALBLE;
+    }
+    
+    return evaluation;
+}
+
+//----------------------------------------------
+//  function calc text result
+//
+function calcTextResult(resultNum){ 
+
+    let text = ""; 
+
+    switch(resultNum)
+    {
+        case NONEVALUALBLE:       text = "Noneval";             break;
+        case NORMALVALUE:         text = "Normal";              break;
+        case NORMALVALUE_3_6:     text = "Phototerapy_6, r3_6";      break;
+        case NORMALVALUE_6_12:    text = "Normal, r6_12";       break;
+        case PHOTOTHERAPY:        text = "Phototerapy";         break;
+        case PHOTOTHERAPY_3_6:    text = "Phototerapy, r3_6";   break;
+        case PHOTOTHERAPY_6_12:   text = "Phototerapy, r6_12";  break;
+        case EXCHANGETRANSFUSION: text = "Exanguino";           break;
+        default:                  text = "Out of range";        break;
+        
+    }
+    return text
+}
+
+//----------------------------------------------
 //  function to draw graph
 //
 function onClickBtnShowGraph() {
@@ -250,5 +326,14 @@ function onClickBtnShowGraph() {
     console.log("Bilirubina totale = " + totalSerumBili);
     console.log("Unità di misura = " + examUnit);
     console.log("Array data graph= " + dataLinesGraph);
-    drawGraphic(dataLinesGraph, hourAfterBirth);
+    drawGraphic(dataLinesGraph, hourAfterBirth, totalSerumBili);
+    
+    const resultNum = evaluate(pazEtaGest, hourBirthExam, totalSerumBili, examUnit)
+    console.log("resultNum= " + resultNum);
+
+    const resultText = calcTextResult(resultNum);
+    console.log("resultText= " + resultText);
+
+    document.getElementById('result').value = resultText;
 };
+
