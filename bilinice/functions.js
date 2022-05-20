@@ -328,7 +328,7 @@ function onClickBtnShowGraph() {
     console.log("Array data graph= " + dataLinesGraph);
     drawGraphic(dataLinesGraph, hourAfterBirth, totalSerumBili);
     
-    const resultNum = evaluate(pazEtaGest, hourBirthExam, totalSerumBili, examUnit)
+    const resultNum = evaluate(pazEtaGest, hourAfterBirth, totalSerumBili, examUnit)
     console.log("resultNum= " + resultNum);
 
     const resultText = calcTextResult(resultNum);
