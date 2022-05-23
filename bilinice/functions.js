@@ -149,11 +149,20 @@ function getValue38eg(hourBirthExam) {
 //----------------------------------------------
 // Funcion to draw draph with EGraphs library
 //
-function drawGraphic(dataLinesGraph, hourAfterBirth, totalSerumBili) {
-    const data = dataLinesGraph;
+function drawGraphic(dataLinesGraph, hourAfterBirth, totalSerumBili, examUnit) {
+    let data = [];
+    let totalSerumBiliLoc = totalSerumBili;
+    if (examUnit != 'mg/dl') {
+         data = [...dataLinesGraph];
+
+    }else {
+        data = dataLinesGraph.map((v)=> v / MMOL2MGDL);
+        totalSerumBiliLoc = totalSerumBiliLoc / MMOL2MGDL;
+    }
+    
     const dayAfterBirth = Math.round(hourAfterBirth / 24 * 100) / 100;
 
-    // console.log('data = ' + data);
+    console.log('data = ' + data);
     // console.log('hourAfterBirth = ' + hourAfterBirth);
     // console.log('dayAfterBirth= ' + dayAfterBirth);
 
@@ -215,7 +224,7 @@ function drawGraphic(dataLinesGraph, hourAfterBirth, totalSerumBili) {
             },
             {
                 data: [
-                    [dayAfterBirth, totalSerumBili]
+                    [dayAfterBirth, totalSerumBiliLoc]
                 ],
                 type: 'scatter',
                 color: 'green',
@@ -295,7 +304,7 @@ function calcTextResult(resultNum){
     {
         case NONEVALUALBLE:       text = "Noneval";             break;
         case NORMALVALUE:         text = "Normal";              break;
-        case NORMALVALUE_3_6:     text = "Phototerapy_6, r3_6";      break;
+        case NORMALVALUE_3_6:     text = "Phototerapy_6, r3_6"; break;
         case NORMALVALUE_6_12:    text = "Normal, r6_12";       break;
         case PHOTOTHERAPY:        text = "Phototerapy";         break;
         case PHOTOTHERAPY_3_6:    text = "Phototerapy, r3_6";   break;
@@ -315,6 +324,7 @@ function onClickBtnShowGraph() {
     const hourAfterBirth = document.getElementById('hourAfterBirth').value;
     const pazEtaGest = document.getElementById('pazEtaGest').value;
     let totalSerumBili = document.getElementById('totalSerumBili').value;
+    totalSerumBili = parseFloat(totalSerumBili);
     console.log("Bilirubina totale = " + totalSerumBili);
     const examUnit = document.getElementById('examUnit').value;
     if (examUnit === 'mg/dl') { totalSerumBili = totalSerumBili * MMOL2MGDL };
@@ -326,7 +336,7 @@ function onClickBtnShowGraph() {
     console.log("Bilirubina totale = " + totalSerumBili);
     console.log("Unità di misura = " + examUnit);
     console.log("Array data graph= " + dataLinesGraph);
-    drawGraphic(dataLinesGraph, hourAfterBirth, totalSerumBili);
+    drawGraphic(dataLinesGraph, hourAfterBirth, totalSerumBili, examUnit);
     
     const resultNum = evaluate(pazEtaGest, hourAfterBirth, totalSerumBili, examUnit)
     console.log("resultNum= " + resultNum);

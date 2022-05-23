@@ -222,11 +222,11 @@
 					switch(res)
 					{
 						
-						case Nomogram.NORMALVALUE:
-							resultText.text=bundle.getString("normal");
-							break;
 						case Nomogram.NONEVALUALBLE:
 							resultText.text=bundle.getString("noneval");
+							break;
+						case Nomogram.NORMALVALUE:
+							resultText.text=bundle.getString("normal");
 							break;
 						case Nomogram.NORMALVALUE_3_6:
 							resultText.text=bundle.getString("phototerapy_6")+", "+bundle.getString("r3_6");

@@ -238,8 +238,8 @@
                                     <input type="text" class="form-control" id="dayHourAfterBirth">
                                 </td>
                                 <td>
-                                    <button type="button" class="btn btn-outline-success" onclick="calcolaValori()"
-                                        value="Calcola">
+                                    <!-- <button type="button" id = "calcButton" class="btn btn-outline-success" onclick="calcolaValori()" value="Calcola"> -->
+                                    <button type="button" id="calcButton" class="btn btn-outline-success"  value="Calcola">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                             fill="currentColor" class="bi bi-calculator" viewBox="0 0 16 16">
                                             <path
@@ -269,17 +269,15 @@
                                     </select>
                                 </td>
                             </tr>
-
                             <!-- Button to calc result and show graph -->
                             <tr>
                                 <td>
                                 </td>
                                 <td colspan="3">
-                                    <button type="button" class="btn btn-outline-primary" onclick="onClickBtnShowGraph()">
+                                    <button type="button" class="btn btn-outline-primary" id="resultButton">
                                         Show graph and results</button>
                                 </td>
                             </tr>
-
                             <!-- Result -->
                             <tr>
                                 <td>
@@ -293,6 +291,7 @@
                     </table>
                 </form>
             </aside>
+
             <!-- space for graph -->
             <main id="maincontent" class="col-6">
                 <div id="main" style="width: 600px;height:400px;"></div>
