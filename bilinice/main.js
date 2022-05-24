@@ -12,81 +12,46 @@ const EXCHANGETRANSFUSION_3_6 = 336;
 const EXCHANGETRANSFUSION_6_12 = 3612;
 const MGDL = "mg";
 const MMOL = "mmol";
+const MGDL_PRECISION = 2;
 const TOLLERANCE_0_6 = 0.05;
 const TOLLERANCE_6_12 = 0.10;
 const MMOL2MGDL = 17.09;
+const dataObj = {lang:'', pazCognome:'', pazNome:'', pazDataNascCompl:'', pazEtaGest:0, esameUnitMis:'', hourBirthExam:0, diffDayHour:'', bilirubinaSerum:0};
 
+//inputData = [pazCognome, pazNome, pazDataNascCompl, pazEtaGest, esameUnitMis];
+
+// gerenal event handler run after DOM loaded
 document.addEventListener('DOMContentLoaded', () => {
-
+    
+    // defin event handler for the two buttons
     document.getElementById('calcButton').addEventListener("click", () => {calcolaValori()});
     document.getElementById('resultButton').addEventListener("click", () => {onClickBtnShowGraph()});
 
-    //---------------------------------------------
-    // leggere i parametri dall'Url Sotto esempio di set di parametri
-    // ?lang=IT & paznome=SELEN & pazcogn=PELLETTERI & pazdnas=202205021321 & pazeg=35 & examumis=mg%2fdl
-    //
-    // legge la stringa dei parametri nell'url incluso il ?
-    let queryString = window.location.search;
+    // read parameter from query string and set value in inpuput data obj
+    getInputDataFromQueryString();
 
-    // --------------------- SOLO PER DEBUG ---------------------------
-    // se non c'è la querystring ne impone una per i test
-    if (!queryString) { queryString = "?lang=IT&paznome=SELEN&pazcogn=PELLETTERI&pazdnas=202205201321&pazeg=35&examumis=mg%2fdl" };
-    // ----------------------------------------------------------------
-
-    // -------------------------------------------------------------------
-    // ricava parametri specifici con "urlParams.get" e assega a variabili
-    // 
-    const urlParams = new URLSearchParams(queryString);
-    const lang = urlParams.get('lang');
-    const pazCognome = urlParams.get('pazcogn');
-    const pazNome = urlParams.get('paznome');
-    const pazDataNascCompl = urlParams.get('pazdnas');
-    const pazEtaGest = urlParams.get('pazeg');
-    const esameUnitMis = urlParams.get('examumis');
+    console.log("01-Data Obj= " + JSON.stringify(dataObj, null, 4));
 
     //---------------------------------------------
-    // Calcola n. ore tra data nascita e data esame
-    const hourBirthExam = calcHourBirthExam(pazDataNascCompl, dayjs());
+    // Calc number of hours from birth date and exam date (exam date default = today!)
+    dataObj.hourBirthExam = calcHourBirthExam(dataObj.pazDataNascCompl, dayjs());
+    
+    console.log("02-Data Obj= " + JSON.stringify(dataObj, null, 4));
 
     //---------------------------------------------
-    // calc diffDayHour to show in corrispondent field "<days>d <hours>h" --> <trunc(diffDay)> d <round(diffDay - trunc(diffDay)) * 24> h
-    const diffDayHour = calcDiffDayHour(pazDataNascCompl, dayjs());
-
-    //----------------------------------------------
-    // calculate string of birth date for set value in the HTML form data-time field 
-    //
-    // const dateField1 = dayjs(pazDataNascCompl, "YYYYMMDDmmss")
-    // const dateTimeFieldStrDateofBirth = dayjs(dateField1).format('YYYY-MM-DD') + "T" + dayjs(dateField1).format('HH') + ":" + dayjs(dateField1).format('mm');
-    // const dateTimeFieldStrDateofBirth = dateJsObj_2_DateTimeFieldString(dateField1);
-    const dateTimeFieldStrDateofBirth = dateJsObj_2_DateTimeFieldString(dayjs(pazDataNascCompl, "YYYYMMDDmmss"));
-
-    //----------------------------------------------
-    // calculate string of exam date for HTML form data-time field
-    // const dateField2 = dayjs();
-    // const dateTimeFieldStrDateofExam = dayjs(dateField2).format('YYYY-MM-DD') + "T" + dayjs(dateField2).format('HH') + ":" + dayjs(dateField2).format('mm');
-    // const dateTimeFieldStrDateofExam2 = dateJsObj_2_DateTimeFieldString(dateField2);
-
-    const dateTimeFieldStrDateofExam = dateJsObj_2_DateTimeFieldString(dayjs());
+    // calc diffDayHour to show in corrispondent field --> string "<days>d <hours>h" --> <trunc(diffDay)> d <round(diffDay - trunc(diffDay)) * 24> h
+    dataObj.diffDayHour = calcDiffDayHour(dataObj.pazDataNascCompl, dayjs());
 
     //----------------------------------------------
     // Set inizial value in HTML form fields
     //
-    document.getElementById('pazCognNom').value = pazCognome + " " + pazNome;
-    document.getElementById('pazEtaGest').value = pazEtaGest;
-    document.getElementById('hourAfterBirth').value = hourBirthExam;
-    document.getElementById('dayHourAfterBirth').value = diffDayHour;
-    document.getElementById('examUnit').value = esameUnitMis;
+    setInizialValueOfInputField();
 
-    document.getElementById('DayTimeofBirth').value = dateTimeFieldStrDateofBirth;
-    document.getElementById('DayTimeofBirth').min = dateTimeFieldStrDateofBirth;
-    document.getElementById('DayTimeofExam').value = dateTimeFieldStrDateofExam;
-    document.getElementById('DayTimeofExam').min = dateTimeFieldStrDateofBirth;
 
-    document.getElementById('pazCognNom').disabled = true;
-    document.getElementById('DayTimeofBirth').disabled = true;
-    document.getElementById('hourAfterBirth').disabled = true;
-    document.getElementById('dayHourAfterBirth').disabled = true;
+    // Test functions
+    // mmol2mgdl(201);
 
+    
 });
 
 
