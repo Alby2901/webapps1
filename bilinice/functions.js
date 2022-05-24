@@ -260,7 +260,7 @@ function drawGraphic(dataLinesGraph, hourAfterBirth, totalSerumBili, examUnit, p
           },
 
         legend: {
-            data: ['Phototerapy', 'ExchangeFuson', 'Photot.Limit', 'Exchange.Limit', 'Patient Bili Serum'],
+            data: ['Phototerapy', 'Exchange Transfusion', 'Photot. limit', 'ExchangeT. limit', 'Patient Bilir. Serum'],
             top: 'bottom',
           },
 
@@ -302,7 +302,7 @@ function drawGraphic(dataLinesGraph, hourAfterBirth, totalSerumBili, examUnit, p
 
             },
             {
-                name: 'ExchangeFuson',
+                name: 'Exchange Transfusion',
                 showSymbol: false,
                 type: 'line',
                 color: 'red',
@@ -314,7 +314,7 @@ function drawGraphic(dataLinesGraph, hourAfterBirth, totalSerumBili, examUnit, p
 
             },
             {
-                name: 'Photot.Limit',
+                name: 'Photot. limit',
                 type: 'scatter',
                 color: 'blue',
                 data: [
@@ -323,7 +323,7 @@ function drawGraphic(dataLinesGraph, hourAfterBirth, totalSerumBili, examUnit, p
 
             },
             {
-                name: 'Exchange.Limit',               
+                name: 'ExchangeT. limit',               
                 type: 'scatter',
                 color: 'red',
                 data: [
@@ -332,7 +332,7 @@ function drawGraphic(dataLinesGraph, hourAfterBirth, totalSerumBili, examUnit, p
 
             },
             {
-                name: 'Patient Bili Serum',               
+                name: 'Patient Bilir. Serum',               
                 type: 'scatter',
                 color: 'green',
                 data: [
