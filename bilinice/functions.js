@@ -1,7 +1,80 @@
 'use strict'
 
 //----------------------------------------------
-// Function to conver objet dateJS to string for set value of data-time field: "YYYY-MM-DDTHH:MM" -> example: "2022-05-20T20:58"
+// Function to read data from query string and set value ov dataObj
+// work direct on dataObj  
+//
+function getInputDataFromQueryString() {
+
+    //---------------------------------------------
+    // leggere i parametri dall'Url Sotto esempio di set di parametri
+    // ?lang=IT & paznome=SELEN & pazcogn=PELLETTERI & pazdnas=202205021321 & pazeg=35 & examumis=mg%2fdl
+    //
+    // legge la stringa dei parametri nell'url incluso il ?
+    let queryString = window.location.search;
+
+    // --------------------- SOLO PER DEBUG ---------------------------
+    // se non c'è la querystring ne impone una per i test
+    if (!queryString) { queryString = "?lang=IT&paznome=NOME&pazcogn=COGNOME&pazdnas=202205201321&pazeg=35&examumis=mg%2fdl" };
+    // ----------------------------------------------------------------
+
+    // -------------------------------------------------------------------
+    // ricava parametri specifici con "urlParams.get" e assegna i valori all'oggetto dataObj
+    // 
+    const urlParams = new URLSearchParams(queryString);
+
+    dataObj.lang = urlParams.get('lang');
+    dataObj.pazCognome = urlParams.get('pazcogn');
+    dataObj.pazNome = urlParams.get('paznome');
+    dataObj.pazDataNascCompl = urlParams.get('pazdnas');
+    dataObj.pazEtaGest = urlParams.get('pazeg');
+    dataObj.esameUnitMis = urlParams.get('examumis');
+
+}
+
+//----------------------------------------------
+// Function to set the inizial value of input field 
+//
+function setInizialValueOfInputField() {
+
+    //----------------------------------------------
+    // Set inizial value in HTML form fields
+    //
+    document.getElementById('pazCognNom').value = dataObj.pazCognome + " " + dataObj.pazNome;
+    document.getElementById('pazEtaGest').value = dataObj.pazEtaGest;
+    document.getElementById('hourAfterBirth').value = dataObj.hourBirthExam;
+    document.getElementById('dayHourAfterBirth').value = dataObj.diffDayHour;
+    document.getElementById('examUnit').value = dataObj.esameUnitMis;
+
+    //----------------------------------------------
+    // Calculate string of birth date for set value in the HTML form data-time field 
+    // (Data-time field need to receive value as a string like  "YYYY-MM-DDTHH:MM" -> example: "2022-05-20T20:58")
+    //
+    const dateTimeFieldStrDateofBirth = dateJsObj_2_DateTimeFieldString(dayjs(dataObj.pazDataNascCompl, "YYYYMMDDmmss"));
+
+    //----------------------------------------------
+    // Calculate string of exam date for set value in the HTML form data-time field 
+    // (Data-time field need to receive value as a string like  "YYYY-MM-DDTHH:MM" -> example: "2022-05-20T20:58")
+    //
+    const dateTimeFieldStrDateOfExam = dateJsObj_2_DateTimeFieldString(dayjs());
+
+    document.getElementById('DayTimeofBirth').value = dateTimeFieldStrDateofBirth;
+    document.getElementById('DayTimeofBirth').min = dateTimeFieldStrDateofBirth;
+    document.getElementById('DayTimeofExam').value = dateTimeFieldStrDateOfExam;
+    document.getElementById('DayTimeofExam').min = dateTimeFieldStrDateofBirth;
+
+    //----------------------------------------------
+    // disable fields which not need to be change by user
+    //
+    document.getElementById('pazCognNom').disabled = true;
+    document.getElementById('DayTimeofBirth').disabled = true;
+    document.getElementById('hourAfterBirth').disabled = true;
+    document.getElementById('dayHourAfterBirth').disabled = true;
+
+}
+
+//----------------------------------------------
+// Function to convert objet dateJS to string for set value of data-time field: "YYYY-MM-DDTHH:MM" -> example: "2022-05-20T20:58"
 // date is a dayJS object
 // If date is empty return the string of current date
 //
@@ -9,7 +82,7 @@ function dateJsObj_2_DateTimeFieldString(date) {
 
     // "if" is NOT NECESSARY
     //if (!date) return dayjs(date).format('YYYY-MM-DD') + "T" + dayjs(date).format('HH') + ":" + dayjs(date).format('mm');
-    
+
     return dayjs(date).format('YYYY-MM-DD') + "T" + dayjs(date).format('HH') + ":" + dayjs(date).format('mm');
 
 };
@@ -22,9 +95,7 @@ function dateJsObj_2_DateTimeFieldString(date) {
 // 
 function calcHourBirthExam(stringDate, objDatejs) {
     const date1 = dayjs(stringDate, "YYYYMMDDmmss")                     // convert date in dayJS obj
-    const date2 = dayjs(objDatejs);                                     // convert date in dayJS obj (may not necessary)
-    // const dt1Dt2Diff = date2.diff(date1, 'day', true)                // calculate date diff in days (float)
-    // const diffDay = Math.round(dt1Dt2Diff);                          // calculate date diff in days (round)
+    const date2 = dayjs(objDatejs);                                     // convert date in dayJS obj (may not be necessary)
     const hourBirthExam = Math.round(date2.diff(date1, 'hour', true));  // calculate hours diff in hours (float then round)
     return hourBirthExam
 };
@@ -49,15 +120,21 @@ function calcDiffDayHour(date1, date2) {
 
 };
 
+//---------------------------------------------
+//Function to convert siero bilirubin value from mmol/dl to mg/dl
 //
-// Function to convert siero bilirubin value from mmol/dl to mg/dl
-//
-// function mmol2mgdl(ar: IAxisRenderer, strCMs: String): String {
-//     // var n: NumberFormatter = new NumberFormatter();
-//     // n.precision = 1
-//     // return n.format((Number(strCMs) / Nomogram.MMOL2MGDL).toString());
-//     return "pippo";
-// };
+function mmol2mgdl(mmolValue){
+     
+    // const mgdlValue = Math.round((Number(mmolValue) / MMOL2MGDL)*100)/100;
+
+    console.log("test1 f.mmol2mgdl = " + (Number(mmolValue) / MMOL2MGDL));
+
+    const mgdlValue = parseFloat((Number(mmolValue) / MMOL2MGDL).toFixed(MGDL_PRECISION));
+
+    console.log("test2 f.mmol2mgdl = " + mgdlValue);
+    return mgdlValue
+
+};
 
 //----------------------------------------------
 // Function to calc the value of the graph and the teraphy needed 
@@ -149,17 +226,17 @@ function getValue38eg(hourBirthExam) {
 //----------------------------------------------
 // Funcion to draw draph with EGraphs library
 //
-function drawGraphic(dataLinesGraph, hourAfterBirth, totalSerumBili, examUnit) {
+function drawGraphic(dataLinesGraph, hourAfterBirth, totalSerumBili, examUnit, pazEtaGest) {
     let data = [];
     let totalSerumBiliLoc = totalSerumBili;
     if (examUnit != 'mg/dl') {
-         data = [...dataLinesGraph];
+        data = [...dataLinesGraph];
 
-    }else {
-        data = dataLinesGraph.map((v)=> v / MMOL2MGDL);
+    } else {
+        data = dataLinesGraph.map((v) => v / MMOL2MGDL);
         totalSerumBiliLoc = totalSerumBiliLoc / MMOL2MGDL;
     }
-    
+
     const dayAfterBirth = Math.round(hourAfterBirth / 24 * 100) / 100;
 
     console.log('data = ' + data);
@@ -168,9 +245,25 @@ function drawGraphic(dataLinesGraph, hourAfterBirth, totalSerumBili, examUnit) {
 
     var myChart = echarts.init(document.getElementById('main'));
     var option = {
-        // title: {
-        //   text: 'grafico bilirubina nice'
-        // },
+        title: {
+            text: "Bilirubine Nice Graph",
+            subtext: "Gestional Age: " + pazEtaGest,
+            left: "center",
+            top: "top",
+            itemGap: 5,
+            textStyle: {
+              fontSize: 25
+            },
+            subtextStyle: {
+              fontSize: 18
+            }
+          },
+
+        legend: {
+            data: ['Phototerapy', 'ExchangeFuson', 'Photot.Limit', 'Exchange.Limit', 'Patient Bili Serum'],
+            top: 'bottom',
+          },
+
         xAxis: {
             // data: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14']
 
@@ -180,54 +273,72 @@ function drawGraphic(dataLinesGraph, hourAfterBirth, totalSerumBili, examUnit) {
             name: 'Day of Life',
             nameLocation: 'middle',
             vertticalAlign: 'bottom',
+            nameGap: 25,
             nameTextStyle: {
                 fontWeight: 'bold',
-                // verticalAlign: 'bottom'   
             },
             interval: 1
         },
-        yAxis: {},
+        yAxis: {
+
+            name: 'Bilirubin Serum',
+            nameLocation: 'middle',
+            nameGap: 30,
+            nameTextStyle: {
+                fontWeight: 'bold',
+            },
+        },
         series: [
-            {
+            {   
+                name: 'Phototerapy',                
+                showSymbol: false,
+                type: 'line',
+                color: 'blue',
                 data: [
                     [0, data[0]],
                     [3, data[2]],
                     [14, data[2]]
                 ],
-                showSymbol: false,
-                type: 'line',
-                color: 'blue',
+
             },
             {
+                name: 'ExchangeFuson',
+                showSymbol: false,
+                type: 'line',
+                color: 'red',
                 data: [
                     [0, data[1]],
                     [3, data[3]],
                     [14, data[3]]
                 ],
-                showSymbol: false,
-                type: 'line',
-                color: 'red',
+
             },
             {
+                name: 'Photot.Limit',
+                type: 'scatter',
+                color: 'blue',
                 data: [
                     [dayAfterBirth, data[4]]
                 ],
-                type: 'scatter',
-                color: 'blue',
+
             },
             {
+                name: 'Exchange.Limit',               
+                type: 'scatter',
+                color: 'red',
                 data: [
                     [dayAfterBirth, data[5]]
                 ],
-                type: 'scatter',
-                color: 'red',
+
             },
             {
+                name: 'Patient Bili Serum',               
+                type: 'scatter',
+                color: 'green',
                 data: [
                     [dayAfterBirth, totalSerumBiliLoc]
                 ],
-                type: 'scatter',
-                color: 'green',
+
             },
 
         ]
@@ -289,29 +400,28 @@ function evaluate(ageGest, hourBirthExam, totalSerumBili, examUnit) {
     } else {
         evaluation = NONEVALUALBLE;
     }
-    
+
     return evaluation;
 }
 
 //----------------------------------------------
 //  function calc text result
 //
-function calcTextResult(resultNum){ 
+function calcTextResult(resultNum) {
 
-    let text = ""; 
+    let text = "";
 
-    switch(resultNum)
-    {
-        case NONEVALUALBLE:       text = "Noneval";             break;
-        case NORMALVALUE:         text = "Normal";              break;
-        case NORMALVALUE_3_6:     text = "Phototerapy_6, r3_6"; break;
-        case NORMALVALUE_6_12:    text = "Normal, r6_12";       break;
-        case PHOTOTHERAPY:        text = "Phototerapy";         break;
-        case PHOTOTHERAPY_3_6:    text = "Phototerapy, r3_6";   break;
-        case PHOTOTHERAPY_6_12:   text = "Phototerapy, r6_12";  break;
-        case EXCHANGETRANSFUSION: text = "Exanguino";           break;
-        default:                  text = "Out of range";        break;
-        
+    switch (resultNum) {
+        case NONEVALUALBLE: text = "Noneval"; break;
+        case NORMALVALUE: text = "Normal"; break;
+        case NORMALVALUE_3_6: text = "Phototerapy_6, r3_6"; break;
+        case NORMALVALUE_6_12: text = "Normal, r6_12"; break;
+        case PHOTOTHERAPY: text = "Phototerapy"; break;
+        case PHOTOTHERAPY_3_6: text = "Phototerapy, r3_6"; break;
+        case PHOTOTHERAPY_6_12: text = "Phototerapy, r6_12"; break;
+        case EXCHANGETRANSFUSION: text = "Exanguino"; break;
+        default: text = "Out of range"; break;
+
     }
     return text
 }
@@ -336,8 +446,8 @@ function onClickBtnShowGraph() {
     console.log("Bilirubina totale = " + totalSerumBili);
     console.log("Unità di misura = " + examUnit);
     console.log("Array data graph= " + dataLinesGraph);
-    drawGraphic(dataLinesGraph, hourAfterBirth, totalSerumBili, examUnit);
-    
+    drawGraphic(dataLinesGraph, hourAfterBirth, totalSerumBili, examUnit, pazEtaGest);
+
     const resultNum = evaluate(pazEtaGest, hourAfterBirth, totalSerumBili, examUnit)
     console.log("resultNum= " + resultNum);
 
