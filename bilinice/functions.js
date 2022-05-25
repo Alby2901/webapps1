@@ -1,5 +1,15 @@
 'use strict'
 
+
+//----------------------------------------------
+// Function to roun decimal number to a certain number of digit ead data from query string and set value ov dataObj
+// work direct on dataObj  
+//
+function roundToDigit(num, digit) {
+    const pot = Math.pow(10, digit);
+    return Math.round(num * pot) / pot;
+}
+
 //----------------------------------------------
 // Function to read data from query string and set value ov dataObj
 // work direct on dataObj  
@@ -462,5 +472,22 @@ function onClickBtnShowGraph() {
     console.log("resultText= " + resultText);
 
     document.getElementById('result').value = resultText;
+
+    let lowLimit = (pazEtaGest == '38') ? dataLinesGraph[6] : dataLinesGraph[4];
+    lowLimit = (examUnit === 'mg/dl') ? roundToDigit(lowLimit / MMOL2MGDL, 2 ) : lowLimit;
+    const lowLimitstr = "LowLimit= " + lowLimit;
+
+    let hightLimit = ((pazEtaGest == '38') ? dataLinesGraph[7] : dataLinesGraph[5]);
+    hightLimit = (examUnit === 'mg/dl') ? roundToDigit(hightLimit / MMOL2MGDL, 2) : hightLimit;
+    const hightLimitstr = "LowLimit= " + hightLimit;
+
+    totalSerumBili = (examUnit === 'mg/dl') ? totalSerumBili / MMOL2MGDL : totalSerumBili;
+    const totalSerumBili_00_06 = roundToDigit(totalSerumBili + totalSerumBili * TOLLERANCE_0_6, 2);
+    const totalSerumBili_06_12 = roundToDigit(totalSerumBili + totalSerumBili * TOLLERANCE_6_12, 2);
+    const totalSerumBilistr = "Bilirubina= " + totalSerumBili + ", " + totalSerumBili_00_06 + ", " + totalSerumBili_06_12
+
+    document.getElementById('value').value = lowLimitstr + '\n' + hightLimitstr + '\n' + totalSerumBilistr;
 };
+
+
 

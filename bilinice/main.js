@@ -104,6 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // defin event handler for the two buttons
     document.getElementById('calcButton').addEventListener("click", () => { calcolaValori() });
     document.getElementById('resultButton').addEventListener("click", () => { onClickBtnShowGraph() });
+    document.getElementById('DayTimeofExam').addEventListener("change", () => { calcolaValori() });
 
     // read parameter from query string and set value in inpuput data obj
     getInputDataFromQueryString();
@@ -134,6 +135,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     testlang = "EN";
     console.log(testlang + " App= " + languageTerms[testlang].app_name);
+
+    console.log("Arrotonda 2.005 = " + roundToDigit(2.005, 2));
 
 });
 
