@@ -410,20 +410,31 @@ function evaluate(ageGest, hourBirthExam, totalSerumBili, examUnit) {
 function calcTextResult(resultNum) {
 
     let text = "";
+    const lang = dataObj.lang;
+    // console.log("calcTextResult Lang="+ lang);
 
     switch (resultNum) {
-        case NONEVALUALBLE: text = "Noneval"; break;
-        case NORMALVALUE: text = "Normal"; break;
-        case NORMALVALUE_3_6: text = "Phototerapy_6, r3_6"; break;
-        case NORMALVALUE_6_12: text = "Normal, r6_12"; break;
-        case PHOTOTHERAPY: text = "Phototerapy"; break;
-        case PHOTOTHERAPY_3_6: text = "Phototerapy, r3_6"; break;
-        case PHOTOTHERAPY_6_12: text = "Phototerapy, r6_12"; break;
-        case EXCHANGETRANSFUSION: text = "Exanguino"; break;
-        default: text = "Out of range"; break;
+        // case NONEVALUALBLE: text = "Noneval"; break;
+        // case NORMALVALUE: text = "Normal"; break;
+        // case NORMALVALUE_3_6: text = "Phototerapy_6, r3_6"; break;
+        // case NORMALVALUE_6_12: text = "Normal, r6_12"; break;
+        // case PHOTOTHERAPY: text = "Phototerapy"; break;
+        // case PHOTOTHERAPY_3_6: text = "Phototerapy, r3_6"; break;
+        // case PHOTOTHERAPY_6_12: text = "Phototerapy, r6_12"; break;
+        // case EXCHANGETRANSFUSION: text = "Exanguino"; break;
 
+        case NONEVALUALBLE: text = languageTerms[lang].noneval; break;
+        case NORMALVALUE: text = languageTerms[lang].normal; break;
+        case NORMALVALUE_3_6: text = languageTerms[lang].phototerapy_6 + ", " + languageTerms[lang].r3_6; break;
+        case NORMALVALUE_6_12: text = languageTerms[lang].normal + ", " + languageTerms[lang].r6_12; break;
+        case PHOTOTHERAPY: text = languageTerms[lang].phototerapy; break;
+        case PHOTOTHERAPY_3_6: text = languageTerms[lang].phototerapy + ", " + languageTerms[lang].r3_6; break;
+        case PHOTOTHERAPY_6_12: text = languageTerms[lang].phototerapy + ", " + languageTerms[lang].r6_12; break;
+        case EXCHANGETRANSFUSION: text = languageTerms[lang].Exanguino; break;
+        default: text = "Out of range - ADVICE SERVICE!"; break;
     }
     return text
+
 }
 
 //----------------------------------------------
@@ -451,7 +462,7 @@ function onClickBtnShowGraph() {
     const resultNum = evaluate(pazEtaGest, hourAfterBirth, totalSerumBili, examUnit)
     console.log("resultNum= " + resultNum);
 
-    const resultText = calcTextResult(resultNum);
+    const resultText = calcTextResult(resultNum, dataObj);
     console.log("resultText= " + resultText);
 
     document.getElementById('result').value = resultText;
