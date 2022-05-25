@@ -16,8 +16,8 @@
     <!-- Caricamento da locale -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- main.css NON UTILIZZATO -->
-    <!-- <link rel='stylesheet' type='text/css' media='screen' href='main.css'> -->
+    <!-- main.css -->
+    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
 
     <!-- Day.js -->
     <!-- Caricamento da remoto -->
@@ -36,7 +36,7 @@
 
 </head>
 
-<body>
+<body class="fontsize">
 
     <header class="container-fluid">
         <div class="row">
@@ -57,7 +57,7 @@
     <div id="container" class="container-fluid">
         <div class="row">
             <!-- left side for data and button -->
-            <aside class="col-4" style="border: 1px solid; padding: 10px; box-shadow: 5px 5px #888888">
+            <aside class="col-4 shadowbox">
                 <form>
                     <table class="table">
                         <tbody>
@@ -72,7 +72,7 @@
                                 <td class="">
                                     Pazient Name:
                                 </td>
-                                <td class="">
+                                <td class="maxwith" colspan="3">
                                     <!-- <label for="pazCognNom" class="form-label">Pazient Name</label> -->
                                     <input type="text" class="form-control" id="pazCognNom">
                                 </td>
@@ -84,7 +84,7 @@
                                 </td>
                                 <td>
                                     <input type="datetime-local" id="DayTimeofBirth" name="DayTimeofBirth"
-                                        class="form-comtrol" value="2018-06-12T19:30" min="2018-06-07T00:00">
+                                        class="maxwith form-comtrol" value="2018-06-12T19:30" min="2018-06-07T00:00">
                                 </td>
                             </tr>
                             <!-- Date of birth old-->
@@ -150,7 +150,7 @@
                                 </td>
                                 <td>
                                     <input type="datetime-local" id="DayTimeofExam" name="DayTimeofExam"
-                                        class="form-comtrol" value="2018-06-12T19:30" min="2018-06-07T00:00">
+                                        class="maxwith form-comtrol" value="2018-06-12T19:30" min="2018-06-07T00:00">
                                 </td>
                             </tr>
                             <!-- Date of Exam old -->
@@ -211,7 +211,7 @@
 
                                 <td>
                                     <!-- <label for="pazOraNasc" class="form-label">ora</label> -->
-                                    <select id="pazEtaGest" class="form-select" aria-label="Gestional age">
+                                    <select id="pazEtaGest" class="maxwith form-select" aria-label="Gestional age">
                                         <option selected>Gestional Age</option>
                                         <option value="23">23</option>
                                         <option value="24">24</option>
@@ -238,10 +238,10 @@
                                     Hour after birth:
                                 </td>
                                 <td>
-                                    <input type="text" class="form-control" id="hourAfterBirth">
+                                    <input type="text" class="maxwith form-control" id="hourAfterBirth">
                                 </td>
                                 <td>
-                                    <input type="text" class="form-control" id="dayHourAfterBirth">
+                                    <input type="text" class="maxwith minwith form-control" id="dayHourAfterBirth">
                                 </td>
                                 <td>
                                     <!-- <button type="button" id = "calcButton" class="btn btn-outline-success" onclick="calcolaValori()" value="Calcola"> -->
@@ -262,10 +262,10 @@
                             <!-- Total serum bilirubin -->
                             <tr>
                                 <td>
-                                    Total serum bilirubin:
+                                    Total serum Bilir.:
                                 </td>
                                 <td>
-                                    <input type="text" class="form-control" id="totalSerumBili">
+                                    <input type="text" class="maxwith form-control" id="totalSerumBili">
                                 </td>
                                 <td colspan="2">
                                     <!-- <label for="pazOraNasc" class="form-label">ora</label> -->
@@ -301,8 +301,7 @@
 
             <!-- space for graph -->
             <main id="maincontent" class="col-8" >
-                <div id="main" style=" height:700px;
-                border: 1px solid; padding: 10px; box-shadow: 5px 5px #888888"></div>
+                <div id="main" style=" height:700px" class="shadowbox"></div>
                 <!-- <div id=" main"></div> -->
                 <!-- <script type="text/javascript" src="graficolinearenew.js"></script> -->
             </main>

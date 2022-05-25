@@ -1,55 +1,27 @@
-header {
-    height: 50px;
-    background-color: green;
-    padding: 0px;
-    margin: 0px;
+.maxwith {
+    max-width: 150px;
 }
 
-header h1{
-    color: white;
+.minwith {
+    min-width: 75px;
 }
 
-#navbar {
-    height: 25px;
-    background-color: grey;
-    padding: 0px;
-    margin: 0px;
-    color: white;
-    font-size: larger;
-    font-family: sans-serif;
-    
+.fontsize {
+    font-size: small;
 }
 
-h1 {
-    color: green;
-    text-align: center;
+.form-select {
+    font-size: small;
 }
 
-main h1 {
-    color: blueviolet;
-    
+.form-control {
+    font-size: small;
 }
 
+.shadowbox {
+    border: 1px;
+    border-style: solid;
+    padding: 10px;
+    box-shadow: 5px 5px #888888;
 
-
-#maincontent {
-    color: blue;
-}
-
-div#container {
-display:flex;
-}
-
-#container aside {
-    background-color: lightgray;
-    padding-left: 10px;
-    padding-right: 10px;
-    flex: 1;
-}
-
-#container main {
-    background-color: white;
-    margin-right: 10px;
-    margin-left: 10px;
-    flex: 2;
 }
