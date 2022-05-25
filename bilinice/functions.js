@@ -123,8 +123,8 @@ function calcDiffDayHour(date1, date2) {
 //---------------------------------------------
 //Function to convert siero bilirubin value from mmol/dl to mg/dl
 //
-function mmol2mgdl(mmolValue){
-     
+function mmol2mgdl(mmolValue) {
+
     // const mgdlValue = Math.round((Number(mmolValue) / MMOL2MGDL)*100)/100;
 
     console.log("test1 f.mmol2mgdl = " + (Number(mmolValue) / MMOL2MGDL));
@@ -162,6 +162,7 @@ function getValue(ageGest, hourBirthExam) {
     pointVal[35] = ["40", "80", "250", "350"];
     pointVal[36] = ["40", "80", "260", "360"];
     pointVal[37] = ["40", "80", "270", "370"];
+    pointVal[38] = ["100", "100", "200", "", "350", "450"];
 
     let arrVal = [];      // value of y for lower and upper straight line at specific hour Birth-Exam
     const val = pointVal[ageGest.toString()];
@@ -239,11 +240,51 @@ function drawGraphic(dataLinesGraph, hourAfterBirth, totalSerumBili, examUnit, p
 
     const dayAfterBirth = Math.round(hourAfterBirth / 24 * 100) / 100;
 
-    console.log('data = ' + data);
+    console.log('drawGraphic data = ' + data);
     // console.log('hourAfterBirth = ' + hourAfterBirth);
     // console.log('dayAfterBirth= ' + dayAfterBirth);
 
     var myChart = echarts.init(document.getElementById('main'));
+    var serie1 = {
+        name: 'Phototerapy', showSymbol: false, type: 'line', color: 'blue', data: [
+            [0, data[0]],
+            [3, data[2]],
+            [14, data[2]]],
+    };
+
+    var serie2 = {
+        name: 'Exchange Transfusion', showSymbol: false, type: 'line', color: 'red', data: [
+            [0, data[1]],
+            [3, data[3]],
+            [14, data[3]]],
+    };
+
+    var serie3 = { name: 'Photot. limit', type: 'scatter', color: 'blue', data: [[dayAfterBirth, data[4]]], };
+    var serie4 = { name: 'ExchangeT. limit', type: 'scatter', color: 'red', data: [[dayAfterBirth, data[5]]], };
+
+    if (pazEtaGest === "38") {
+
+        // pointVal[38] = ["100", "100", "200", "", "350", "450"];
+
+        serie1 = {
+            name: 'Phototerapy', showSymbol: false, type: 'line', color: 'blue', data: [
+                [0, data[0]],
+                [1, data[2]],
+                [4, data[4]],
+                [14, data[4]]],
+        };
+        serie2 = {
+            name: 'Exchange Transfusion', showSymbol: false, type: 'line', color: 'red', data: [
+                [0, data[1]],
+                [1.75, data[5]],
+                [14, data[5]]],
+        };
+        serie3 = { name: 'Photot. limit', type: 'scatter', color: 'blue', data: [[dayAfterBirth, data[6]]], };
+        serie4 = { name: 'ExchangeT. limit', type: 'scatter', color: 'red', data: [[dayAfterBirth, data[7]]], };
+    }
+
+    const serie5 = { name: 'Patient Bilir. Serum', type: 'scatter', color: 'green', data: [[dayAfterBirth, totalSerumBiliLoc]], };
+
     var option = {
         title: {
             text: "Bilirubine Nice Graph",
@@ -252,17 +293,17 @@ function drawGraphic(dataLinesGraph, hourAfterBirth, totalSerumBili, examUnit, p
             top: "top",
             itemGap: 5,
             textStyle: {
-              fontSize: 25
+                fontSize: 25
             },
             subtextStyle: {
-              fontSize: 18
+                fontSize: 18
             }
-          },
+        },
 
         legend: {
             data: ['Phototerapy', 'Exchange Transfusion', 'Photot. limit', 'ExchangeT. limit', 'Patient Bilir. Serum'],
             top: 'bottom',
-          },
+        },
 
         xAxis: {
             // data: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14']
@@ -289,57 +330,11 @@ function drawGraphic(dataLinesGraph, hourAfterBirth, totalSerumBili, examUnit, p
             },
         },
         series: [
-            {   
-                name: 'Phototerapy',                
-                showSymbol: false,
-                type: 'line',
-                color: 'blue',
-                data: [
-                    [0, data[0]],
-                    [3, data[2]],
-                    [14, data[2]]
-                ],
-
-            },
-            {
-                name: 'Exchange Transfusion',
-                showSymbol: false,
-                type: 'line',
-                color: 'red',
-                data: [
-                    [0, data[1]],
-                    [3, data[3]],
-                    [14, data[3]]
-                ],
-
-            },
-            {
-                name: 'Photot. limit',
-                type: 'scatter',
-                color: 'blue',
-                data: [
-                    [dayAfterBirth, data[4]]
-                ],
-
-            },
-            {
-                name: 'ExchangeT. limit',               
-                type: 'scatter',
-                color: 'red',
-                data: [
-                    [dayAfterBirth, data[5]]
-                ],
-
-            },
-            {
-                name: 'Patient Bilir. Serum',               
-                type: 'scatter',
-                color: 'green',
-                data: [
-                    [dayAfterBirth, totalSerumBiliLoc]
-                ],
-
-            },
+            serie1,
+            serie2,
+            serie3,
+            serie4,
+            serie5,
 
         ]
     };
@@ -365,37 +360,38 @@ function calcolaValori() {
 //----------------------------------------------
 //  function calc numeric result
 //
-function evaluate(ageGest, hourBirthExam, totalSerumBili, examUnit) {
+function evaluate(ageGest, hourBirthExam, totalSerumBili) {
 
     console.log("siamo in evaluate");
 
     let evaluation = 0;
     let arrVal = [];
 
-    // if (examUnit == 'mg/dl') { totalSerumBili = totalSerumBili * MMOL2MGDL; }
-
     if ((ageGest <= 38) && (ageGest >= 23)) {
         console.log("Check 01!");
         arrVal = getValue(ageGest, hourBirthExam);
+        const lowLimit = (ageGest == '38') ? arrVal[6] : arrVal[4];
+        const hightLimit = (ageGest == '38') ? arrVal[7] : arrVal[5];
+
         console.log("Check 02! ArrValori= " + arrVal);
-        if (totalSerumBili < arrVal[4])
-            if (totalSerumBili + totalSerumBili * TOLLERANCE_0_6 >= arrVal[4])
+        if (totalSerumBili < lowLimit)
+            if (totalSerumBili + totalSerumBili * TOLLERANCE_0_6 >= lowLimit)
                 return NORMALVALUE_3_6;
-            else if (totalSerumBili + totalSerumBili * TOLLERANCE_6_12 >= arrVal[4])
+            else if (totalSerumBili + totalSerumBili * TOLLERANCE_6_12 >= lowLimit)
                 return NORMALVALUE_6_12;
             else
                 return NORMALVALUE;
 
-        if ((totalSerumBili >= arrVal[4]) && totalSerumBili <= arrVal[5])
+        if ((totalSerumBili >= lowLimit) && totalSerumBili <= hightLimit)
 
-            if (totalSerumBili + totalSerumBili * TOLLERANCE_0_6 >= arrVal[5])
+            if (totalSerumBili + totalSerumBili * TOLLERANCE_0_6 >= hightLimit)
                 return PHOTOTHERAPY_3_6;
-            else if (totalSerumBili + totalSerumBili * TOLLERANCE_6_12 >= arrVal[5])
+            else if (totalSerumBili + totalSerumBili * TOLLERANCE_6_12 >= hightLimit)
                 return PHOTOTHERAPY_6_12;
             else
                 return PHOTOTHERAPY;
 
-        if ((totalSerumBili > arrVal[5]))
+        if ((totalSerumBili > hightLimit))
             return EXCHANGETRANSFUSION;
     } else {
         evaluation = NONEVALUALBLE;
@@ -430,7 +426,7 @@ function calcTextResult(resultNum) {
         case PHOTOTHERAPY: text = languageTerms[lang].phototerapy; break;
         case PHOTOTHERAPY_3_6: text = languageTerms[lang].phototerapy + ", " + languageTerms[lang].r3_6; break;
         case PHOTOTHERAPY_6_12: text = languageTerms[lang].phototerapy + ", " + languageTerms[lang].r6_12; break;
-        case EXCHANGETRANSFUSION: text = languageTerms[lang].Exanguino; break;
+        case EXCHANGETRANSFUSION: text = languageTerms[lang].exanguino; break;
         default: text = "Out of range - ADVICE SERVICE!"; break;
     }
     return text
@@ -459,7 +455,7 @@ function onClickBtnShowGraph() {
     console.log("Array data graph= " + dataLinesGraph);
     drawGraphic(dataLinesGraph, hourAfterBirth, totalSerumBili, examUnit, pazEtaGest);
 
-    const resultNum = evaluate(pazEtaGest, hourAfterBirth, totalSerumBili, examUnit)
+    const resultNum = evaluate(pazEtaGest, hourAfterBirth, totalSerumBili)
     console.log("resultNum= " + resultNum);
 
     const resultText = calcTextResult(resultNum, dataObj);
