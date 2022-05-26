@@ -39,7 +39,62 @@ function getInputDataFromQueryString() {
     dataObj.pazDataNascCompl = urlParams.get('pazdnas');
     dataObj.pazEtaGest = urlParams.get('pazeg');
     dataObj.esameUnitMis = urlParams.get('examumis');
+    dataObj.dateOfBirth = dayjs(dataObj.pazDataNascCompl, "YYYYMMDDmmss");
 
+}
+
+//----------------------------------------------
+// Function to check value are correct for calculation
+// work direct on dataObj  
+//
+function validate() {
+
+    // let text = "";
+    const lang = dataObj.lang;
+
+    const dateBorn = dayjs(dataObj.pazDataNascCompl, "YYYYMMDDmmss");
+    const dateExam = dataObj.dateOfExam;
+
+    // check dateBorn > dateExam
+    if (dateBorn > dateExam) {
+        alert(languageTerms[lang].invaliddate);
+        return false;
+    }
+
+    // check dateExam-dateBirn > 336 (protol apply between 0 and 14 day)  
+    if (dateExam.diff(dateBorn, 'hour', true) > 14 * 24) {
+        alert(languageTerms[lang].tooold);
+        return false;
+    }
+
+    // check dateExam > today
+    if (dateExam > dayjs()) {
+        alert(languageTerms[lang].invalidexamdate);
+        return false;
+    }
+
+    // check dateExam > today
+    if ((isNaN(Number(dataObj.bilirubinaSerum))) || (dataObj.bilirubinaSerum == "")) {
+        alert(languageTerms[lang].nullexam);
+        return false;
+    }
+
+    // check dateExam > today
+    if (isNaN(dataObj.pazEtaGest)) {
+        alert(languageTerms[lang].invalideg);
+        alert()
+        return false;
+    }
+
+    return true;
+}
+
+//----------------------------------------------
+// Function to check value are correct for calculation
+// work direct on dataObj  
+//
+function updDtaObjBilir() {
+    dataObj.bilirubinaSerum = Number(document.getElementById('totalSerumBili').value); 
 }
 
 //----------------------------------------------
@@ -106,7 +161,8 @@ function dateJsObj_2_DateTimeFieldString(date) {
 function calcHourBirthExam(stringDate, objDatejs) {
     const date1 = dayjs(stringDate, "YYYYMMDDmmss")                     // convert date in dayJS obj
     const date2 = dayjs(objDatejs);                                     // convert date in dayJS obj (may not be necessary)
-    const hourBirthExam = Math.round(date2.diff(date1, 'hour', true));  // calculate hours diff in hours (float then round)
+    const datediff = date2.diff(date1, 'hour', true)
+    const hourBirthExam = Math.floor(datediff);  // calculate hours diff in hours (float then round)
     return hourBirthExam
 };
 
@@ -360,8 +416,15 @@ function calcolaValori() {
     // console.log('Siamo in "calcola valori"'); alert('Siamo in "calcola valori"');
     const date1 = document.getElementById('DayTimeofBirth').value
     const date2 = document.getElementById('DayTimeofExam').value
-    console.log('date1 in calc val= ' + date1);
-    console.log('date1 in calc val= ' + date1);
+    console.log('calcolaValori date1= ' + date1);
+    console.log('calcolaValori date2= ' + date2);
+
+    dataObj.dateOfExam = date2;
+    console.log("calcolaValori dataObj1= " + JSON.stringify(dataObj, null, 4));
+
+    dataObj.dateOfExam = dayjs(date2);
+    console.log("calcolaValori dataObj2= " + JSON.stringify(dataObj, null, 4));
+
     document.getElementById('hourAfterBirth').value = calcHourBirthExam(date1, date2);
     document.getElementById('dayHourAfterBirth').value = calcDiffDayHour(date1, date2);
 
@@ -447,46 +510,49 @@ function calcTextResult(resultNum) {
 //  function to draw graph
 //
 function onClickBtnShowGraph() {
-    // console.log('Siamo in "disGraf"'); alert('Siamo in "disGraf"');
-    const hourAfterBirth = document.getElementById('hourAfterBirth').value;
-    const pazEtaGest = document.getElementById('pazEtaGest').value;
-    let totalSerumBili = document.getElementById('totalSerumBili').value;
-    totalSerumBili = parseFloat(totalSerumBili);
-    console.log("Bilirubina totale = " + totalSerumBili);
-    const examUnit = document.getElementById('examUnit').value;
-    if (examUnit === 'mg/dl') { totalSerumBili = totalSerumBili * MMOL2MGDL };
-    const dataLinesGraph = getValue(pazEtaGest, hourAfterBirth);
+    if (validate()) {
+
+        // console.log('Siamo in "disGraf"'); alert('Siamo in "disGraf"');
+        const hourAfterBirth = document.getElementById('hourAfterBirth').value;
+        const pazEtaGest = document.getElementById('pazEtaGest').value;
+        let totalSerumBili = document.getElementById('totalSerumBili').value;
+        totalSerumBili = parseFloat(totalSerumBili);
+        console.log("Bilirubina totale = " + totalSerumBili);
+        const examUnit = document.getElementById('examUnit').value;
+        if (examUnit === 'mg/dl') { totalSerumBili = totalSerumBili * MMOL2MGDL };
+        const dataLinesGraph = getValue(pazEtaGest, hourAfterBirth);
 
 
-    console.log("hour pre chiamata = " + hourAfterBirth);
-    console.log("Età gest pre chiamata = " + pazEtaGest);
-    console.log("Bilirubina totale = " + totalSerumBili);
-    console.log("Unità di misura = " + examUnit);
-    console.log("Array data graph= " + dataLinesGraph);
-    drawGraphic(dataLinesGraph, hourAfterBirth, totalSerumBili, examUnit, pazEtaGest);
+        console.log("hour pre chiamata = " + hourAfterBirth);
+        console.log("Età gest pre chiamata = " + pazEtaGest);
+        console.log("Bilirubina totale = " + totalSerumBili);
+        console.log("Unità di misura = " + examUnit);
+        console.log("Array data graph= " + dataLinesGraph);
+        drawGraphic(dataLinesGraph, hourAfterBirth, totalSerumBili, examUnit, pazEtaGest);
 
-    const resultNum = evaluate(pazEtaGest, hourAfterBirth, totalSerumBili)
-    console.log("resultNum= " + resultNum);
+        const resultNum = evaluate(pazEtaGest, hourAfterBirth, totalSerumBili)
+        console.log("resultNum= " + resultNum);
 
-    const resultText = calcTextResult(resultNum, dataObj);
-    console.log("resultText= " + resultText);
+        const resultText = calcTextResult(resultNum, dataObj);
+        console.log("resultText= " + resultText);
 
-    document.getElementById('result').value = resultText;
+        document.getElementById('result').value = resultText;
 
-    let lowLimit = (pazEtaGest == '38') ? dataLinesGraph[6] : dataLinesGraph[4];
-    lowLimit = (examUnit === 'mg/dl') ? roundToDigit(lowLimit / MMOL2MGDL, 2 ) : lowLimit;
-    const lowLimitstr = "LowLimit= " + lowLimit;
+        let lowLimit = (pazEtaGest == '38') ? dataLinesGraph[6] : dataLinesGraph[4];
+        lowLimit = (examUnit === 'mg/dl') ? roundToDigit(lowLimit / MMOL2MGDL, 2) : lowLimit;
+        const lowLimitstr = "LowLimit= " + lowLimit;
 
-    let hightLimit = ((pazEtaGest == '38') ? dataLinesGraph[7] : dataLinesGraph[5]);
-    hightLimit = (examUnit === 'mg/dl') ? roundToDigit(hightLimit / MMOL2MGDL, 2) : hightLimit;
-    const hightLimitstr = "LowLimit= " + hightLimit;
+        let hightLimit = ((pazEtaGest == '38') ? dataLinesGraph[7] : dataLinesGraph[5]);
+        hightLimit = (examUnit === 'mg/dl') ? roundToDigit(hightLimit / MMOL2MGDL, 2) : hightLimit;
+        const hightLimitstr = "HightLimit= " + hightLimit;
 
-    totalSerumBili = (examUnit === 'mg/dl') ? totalSerumBili / MMOL2MGDL : totalSerumBili;
-    const totalSerumBili_00_06 = roundToDigit(totalSerumBili + totalSerumBili * TOLLERANCE_0_6, 2);
-    const totalSerumBili_06_12 = roundToDigit(totalSerumBili + totalSerumBili * TOLLERANCE_6_12, 2);
-    const totalSerumBilistr = "Bilirubina= " + totalSerumBili + ", " + totalSerumBili_00_06 + ", " + totalSerumBili_06_12
+        totalSerumBili = (examUnit === 'mg/dl') ? totalSerumBili / MMOL2MGDL : totalSerumBili;
+        const totalSerumBili_00_06 = roundToDigit(totalSerumBili + totalSerumBili * TOLLERANCE_0_6, 2);
+        const totalSerumBili_06_12 = roundToDigit(totalSerumBili + totalSerumBili * TOLLERANCE_6_12, 2);
+        const totalSerumBilistr = "Bilirubin (val, +5%, +10%)= " + totalSerumBili + ", " + totalSerumBili_00_06 + ", " + totalSerumBili_06_12
 
-    document.getElementById('value').value = lowLimitstr + '\n' + hightLimitstr + '\n' + totalSerumBilistr;
+        document.getElementById('value').value = lowLimitstr + '\n' + hightLimitstr + '\n' + totalSerumBilistr;
+    }
 };
 
 

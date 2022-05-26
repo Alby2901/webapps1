@@ -16,7 +16,7 @@ const MGDL_PRECISION = 2;
 const TOLLERANCE_0_6 = 0.05;
 const TOLLERANCE_6_12 = 0.10;
 const MMOL2MGDL = 17.09;
-const dataObj = { lang: '', pazCognome: '', pazNome: '', pazDataNascCompl: '', pazEtaGest: 0, esameUnitMis: '', hourBirthExam: 0, diffDayHour: '', bilirubinaSerum: 0 };
+const dataObj = { lang: '', pazCognome: '', pazNome: '', pazDataNascCompl: '', pazEtaGest: 0, esameUnitMis: '', hourBirthExam: 0, diffDayHour: '', bilirubinaSerum: 0, dateOfExam: dayjs(), dateOfBirth:'' };
 
 // Object with terms in different language
 const languageTerms = {
@@ -105,6 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('calcButton').addEventListener("click", () => { calcolaValori() });
     document.getElementById('resultButton').addEventListener("click", () => { onClickBtnShowGraph() });
     document.getElementById('DayTimeofExam').addEventListener("change", () => { calcolaValori() });
+    document.getElementById('totalSerumBili').addEventListener("change", () => { updDtaObjBilir() });
 
     // read parameter from query string and set value in inpuput data obj
     getInputDataFromQueryString();
@@ -128,15 +129,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // Test functions
-    let testlang = "";
+    // let testlang = "";
 
-    testlang = "IT";
-    console.log(testlang + " App= " + languageTerms[testlang].app_name);
+    // testlang = "IT";
+    // console.log(testlang + " App= " + languageTerms[testlang].app_name);
 
-    testlang = "EN";
-    console.log(testlang + " App= " + languageTerms[testlang].app_name);
+    // testlang = "EN";
+    // console.log(testlang + " App= " + languageTerms[testlang].app_name);
 
-    console.log("Arrotonda 2.005 = " + roundToDigit(2.005, 2));
+    // console.log("Arrotonda 2.005 = " + roundToDigit(2.005, 2));
 
 });
 
