@@ -80,9 +80,8 @@ function validate() {
     }
 
     // check dateExam > today
-    if (isNaN(dataObj.pazEtaGest)) {
+    if (isNaN((Number(dataObj.pazEtaGest))) || Number(dataObj.pazEtaGest) < 1 || Number(dataObj.pazEtaGest) > 38 ) {
         alert(languageTerms[lang].invalideg);
-        alert()
         return false;
     }
 
@@ -135,6 +134,7 @@ function setInizialValueOfInputField() {
     document.getElementById('DayTimeofBirth').disabled = true;
     document.getElementById('hourAfterBirth').disabled = true;
     document.getElementById('dayHourAfterBirth').disabled = true;
+    // document.getElementById('pazEtaGest').disabled = true;
 
 }
 
