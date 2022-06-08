@@ -130,10 +130,10 @@ function setInizialValueOfInputField() {
     //----------------------------------------------
     // disable fields which not need to be change by user
     //
-    document.getElementById('pazCognNom').disabled = true;
-    document.getElementById('DayTimeofBirth').disabled = true;
-    document.getElementById('hourAfterBirth').disabled = true;
-    document.getElementById('dayHourAfterBirth').disabled = true;
+    //document.getElementById('pazCognNom').disabled = true;
+    // document.getElementById('DayTimeofBirth').disabled = true;
+    // document.getElementById('hourAfterBirth').disabled = true;
+    // document.getElementById('dayHourAfterBirth').disabled = true;
     // document.getElementById('pazEtaGest').disabled = true;
 
 }
