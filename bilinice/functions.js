@@ -80,7 +80,7 @@ function validate() {
     }
 
     // check dateExam > today
-    if (isNaN((Number(dataObj.pazEtaGest))) || Number(dataObj.pazEtaGest) < 1 || Number(dataObj.pazEtaGest) > 38 ) {
+    if (isNaN((Number(dataObj.pazEtaGest))) || Number(dataObj.pazEtaGest) < 1 || Number(dataObj.pazEtaGest) > 38) {
         alert(languageTerms[lang].invalideg);
         return false;
     }
@@ -93,7 +93,7 @@ function validate() {
 // work direct on dataObj  
 //
 function updDtaObjBilir() {
-    dataObj.bilirubinaSerum = Number(document.getElementById('totalSerumBili').value); 
+    dataObj.bilirubinaSerum = Number(document.getElementById('totalSerumBili').value);
 }
 
 //----------------------------------------------
@@ -135,7 +135,44 @@ function setInizialValueOfInputField() {
     // document.getElementById('hourAfterBirth').disabled = true;
     // document.getElementById('dayHourAfterBirth').disabled = true;
     // document.getElementById('pazEtaGest').disabled = true;
+    // document.getElementById('lockButton').style.display = "none";
 
+    lockUnlockField()
+
+}
+
+//----------------------------------------------
+// Function to set the inizial value of input field 
+//
+function lockUnlockField() {
+    const x = document.getElementById("lockButton");
+    console.log("Stato = " + x.style.display);
+    if (x.style.display === "none") {
+        document.getElementById('pazCognNom').disabled = false;
+        document.getElementById('DayTimeofBirth').disabled = false;
+        document.getElementById('hourAfterBirth').disabled = false;
+        document.getElementById('dayHourAfterBirth').disabled = false;
+        document.getElementById('pazEtaGest').disabled = false;
+        document.getElementById('lockButton').style.display = "block";
+        document.getElementById('unlockButton').style.display = "none";
+
+    } else {
+        document.getElementById('pazCognNom').disabled = true;
+        document.getElementById('DayTimeofBirth').disabled = true;
+        document.getElementById('hourAfterBirth').disabled = true;
+        document.getElementById('dayHourAfterBirth').disabled = true;
+        document.getElementById('pazEtaGest').disabled = true;
+        document.getElementById('lockButton').style.display = "none";
+        document.getElementById('unlockButton').style.display = "block";
+    }
+
+}
+
+//----------------------------------------------
+// Function to show version
+//
+function showVersion() {
+    document.getElementById("version").innerHTML = "<br><p>Version 1.00</p>"
 }
 
 //----------------------------------------------
@@ -149,7 +186,6 @@ function dateJsObj_2_DateTimeFieldString(date) {
     //if (!date) return dayjs(date).format('YYYY-MM-DD') + "T" + dayjs(date).format('HH') + ":" + dayjs(date).format('mm');
 
     return dayjs(date).format('YYYY-MM-DD') + "T" + dayjs(date).format('HH') + ":" + dayjs(date).format('mm');
-
 };
 
 // --------------------------------------------
@@ -540,13 +576,13 @@ function onClickBtnShowGraph() {
 
         let lowLimit = (pazEtaGest == '38') ? dataLinesGraph[6] : dataLinesGraph[4];
         lowLimit = (examUnit === 'mg/dl') ? roundToDigit(lowLimit / MMOL2MGDL, 2) : lowLimit;
-        const lowLimitstr = "LowLimit= " + lowLimit;
+        const lowLimitstr = "LowLimit (blue pint)= " + lowLimit;
 
         let hightLimit = ((pazEtaGest == '38') ? dataLinesGraph[7] : dataLinesGraph[5]);
         hightLimit = (examUnit === 'mg/dl') ? roundToDigit(hightLimit / MMOL2MGDL, 2) : hightLimit;
-        const hightLimitstr = "HightLimit= " + hightLimit;
+        const hightLimitstr = "HightLimit (red point)= " + hightLimit;
 
-        totalSerumBili = (examUnit === 'mg/dl') ? totalSerumBili / MMOL2MGDL : totalSerumBili;
+        totalSerumBili = (examUnit === 'mg/dl') ? roundToDigit(totalSerumBili / MMOL2MGDL, 2) : totalSerumBili;
         const totalSerumBili_00_06 = roundToDigit(totalSerumBili + totalSerumBili * TOLLERANCE_0_6, 2);
         const totalSerumBili_06_12 = roundToDigit(totalSerumBili + totalSerumBili * TOLLERANCE_6_12, 2);
         const totalSerumBilistr = "Bilirubin (val, +5%, +10%)= " + totalSerumBili + ", " + totalSerumBili_00_06 + ", " + totalSerumBili_06_12

@@ -1,5 +1,6 @@
 'use strict'
 
+let test = 0;
 const NONEVALUALBLE = 0;
 const NORMALVALUE = 1;
 const NORMALVALUE_3_6 = 136;
@@ -52,7 +53,7 @@ const languageTerms = {
         phototerapy_6: "Consigliata la foterapia",
         r3_6: "ripetere l'esame entro 6 ore",
         r6_12: "ripetere l'esame tra 6 - 12 ore",
-        tooold: "E' possibile effettuare una valutazioneIt solo fino a 14 giorni di vita",
+        tooold: "E' possibile effettuare una valutazione solo nei primi 14 giorni di vita",
         umis: "mmol/dL",
         verify: "Verifica",
         visualizegraph: "Visualizza grafico"
@@ -89,7 +90,7 @@ const languageTerms = {
         phototerapy_6: "Consider Photherapy",
         r3_6: "repeat bilirubin measurement in 6 hours",
         r6_12: "repeat bilirubin measurement in 6 - 12 hours",
-        tooold: "It can perform an assessment only up to day 14 of  life ",
+        tooold: "It can perform an assessment only up to day 14 of life ",
         umis: "mmol/dL",
         verify: "Verify",
         visualizegraph: "Show graph"
@@ -106,8 +107,11 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('resultButton').addEventListener("click", () => { onClickBtnShowGraph() });
     document.getElementById('DayTimeofExam').addEventListener("change", () => { calcolaValori() });
     document.getElementById('totalSerumBili').addEventListener("change", () => { updDtaObjBilir() });
+    document.getElementById('lockButton').addEventListener("click", () => { lockUnlockField() });
+    document.getElementById('unlockButton').addEventListener("click", () => { lockUnlockField() });
 
     // read parameter from query string and set value in inpuput data obj
+    showVersion();
     getInputDataFromQueryString();
 
     console.log("01-Data Obj= " + JSON.stringify(dataObj, null, 4));
