@@ -1,6 +1,6 @@
 'use strict'
 
-let test = 0;
+let test = 0; // variable for debug purpose
 const NONEVALUALBLE = 0;
 const NORMALVALUE = 1;
 const NORMALVALUE_3_6 = 136;

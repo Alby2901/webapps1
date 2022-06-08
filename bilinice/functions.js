@@ -25,7 +25,13 @@ function getInputDataFromQueryString() {
 
     // --------------------- SOLO PER DEBUG ---------------------------
     // se non c'è la querystring ne impone una per i test
-    if (!queryString) { queryString = "?lang=IT&paznome=NOME&pazcogn=COGNOME&pazdnas=202205201321&pazeg=35&examumis=mg%2fdl" };
+
+        if (!queryString) { 
+
+            // dayjs(date).format('YYYY-MM-DD')
+            const tempDateOfBirth = dayjs().subtract(45, 'hour').format('YYYYMMDDHHmm');
+            // console.log("Data nascita fittizia= " + tempDateOfBirth);
+            queryString = "?lang=IT&paznome=NOME&pazcogn=COGNOME&pazdnas="+ tempDateOfBirth +"&pazeg=35&examumis=mg%2fdl" };
     // ----------------------------------------------------------------
 
     // -------------------------------------------------------------------
