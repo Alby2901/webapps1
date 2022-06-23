@@ -26,12 +26,13 @@ function getInputDataFromQueryString() {
     // --------------------- SOLO PER DEBUG ---------------------------
     // se non c'è la querystring ne impone una per i test
 
-        if (!queryString) { 
+    if (!queryString) {
 
-            // dayjs(date).format('YYYY-MM-DD')
-            const tempDateOfBirth = dayjs().subtract(45, 'hour').format('YYYYMMDDHHmm');
-            // console.log("Data nascita fittizia= " + tempDateOfBirth);
-            queryString = "?lang=IT&paznome=NOME&pazcogn=COGNOME&pazdnas="+ tempDateOfBirth +"&pazeg=35&examumis=mg%2fdl" };
+        // dayjs(date).format('YYYY-MM-DD')
+        const tempDateOfBirth = dayjs().subtract(45, 'hour').format('YYYYMMDDHHmm');
+        // console.log("Data nascita fittizia= " + tempDateOfBirth);
+        queryString = "?lang=IT&paznome=NOME&pazcogn=COGNOME&pazdnas=" + tempDateOfBirth + "&pazeg=35&examumis=mg%2fdl"
+    };
     // ----------------------------------------------------------------
 
     // -------------------------------------------------------------------
@@ -44,6 +45,11 @@ function getInputDataFromQueryString() {
     dataObj.pazNome = urlParams.get('paznome');
     dataObj.pazDataNascCompl = urlParams.get('pazdnas');
     dataObj.pazEtaGest = urlParams.get('pazeg');
+    // check pazEtaàGest  1 >= EG >= 38
+    if (isNaN((Number(dataObj.pazEtaGest))) || Number(dataObj.pazEtaGest) < 1 || Number(dataObj.pazEtaGest) > 38) {
+        alert(languageTerms[dataObj.lang].invalidegreceived);
+        return false;
+    }
     dataObj.esameUnitMis = urlParams.get('examumis');
     dataObj.dateOfBirth = dayjs(dataObj.pazDataNascCompl, "YYYYMMDDmmss");
 
@@ -79,13 +85,13 @@ function validate() {
         return false;
     }
 
-    // check dateExam > today
+    // check val biliserum inserted
     if ((isNaN(Number(dataObj.bilirubinaSerum))) || (dataObj.bilirubinaSerum == "")) {
         alert(languageTerms[lang].nullexam);
         return false;
     }
 
-    // check dateExam > today
+    // check pazEtaàGest  1 >= EG >= 38
     if (isNaN((Number(dataObj.pazEtaGest))) || Number(dataObj.pazEtaGest) < 1 || Number(dataObj.pazEtaGest) > 38) {
         alert(languageTerms[lang].invalideg);
         return false;
@@ -178,7 +184,7 @@ function lockUnlockField() {
 // Function to show version
 //
 function showVersion() {
-    document.getElementById("version").innerHTML = "<br><p>Version 1.00</p>"
+    document.getElementById("version").innerHTML = "<br><p>Version 1.01 - 20220623 - A.Azzola, P.Como</p>"
 }
 
 //----------------------------------------------
@@ -222,7 +228,7 @@ function calcDiffDayHour(date1, date2) {
     const diffDayFloat = date2temp.diff(date1temp, 'day', true);
     const diffDaytrunc = date2temp.diff(date1temp, 'day', false);
     const diffDayDecimalPart = diffDayFloat - diffDaytrunc;
-    const hourRoundOfDiffDaysDecimalPart = Math.round(diffDayDecimalPart * 24);
+    const hourRoundOfDiffDaysDecimalPart = Math.floor(diffDayDecimalPart * 24);
     const diffDayHour = diffDaytrunc + "d " + hourRoundOfDiffDaysDecimalPart + "h";
     return diffDayHour;
 
