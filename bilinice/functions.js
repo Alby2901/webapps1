@@ -160,8 +160,17 @@ function lockUnlockField() {
     const x = document.getElementById("lockButton");
     console.log("Stato = " + x.style.display);
     if (x.style.display === "none") {
+        // Unlock button pressed
         document.getElementById('pazCognNom').disabled = false;
         document.getElementById('DayTimeofBirth').disabled = false;
+
+            const dateTimeFieldStrDateOfExam = dateJsObj_2_DateTimeFieldString(dayjs());
+            document.getElementById('DayTimeofBirth').value = "2022-01-01T00:01";
+            document.getElementById('DayTimeofBirth').min = "";
+            document.getElementById('DayTimeofExam').value = dateTimeFieldStrDateOfExam;
+            document.getElementById('DayTimeofExam').min = "";
+            calcolaValori();
+
         document.getElementById('hourAfterBirth').disabled = false;
         document.getElementById('dayHourAfterBirth').disabled = false;
         document.getElementById('pazEtaGest').disabled = false;
@@ -169,6 +178,7 @@ function lockUnlockField() {
         document.getElementById('unlockButton').style.display = "none";
 
     } else {
+        // Lock button pressed
         document.getElementById('pazCognNom').disabled = true;
         document.getElementById('DayTimeofBirth').disabled = true;
         document.getElementById('hourAfterBirth').disabled = true;

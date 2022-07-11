@@ -107,6 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // defin event handler for the two buttons
     document.getElementById('calcButton').addEventListener("click", () => { calcolaValori() });
     document.getElementById('resultButton').addEventListener("click", () => { onClickBtnShowGraph() });
+    document.getElementById('DayTimeofBirth').addEventListener("change", () => { calcolaValori() });
     document.getElementById('DayTimeofExam').addEventListener("change", () => { calcolaValori() });
     document.getElementById('totalSerumBili').addEventListener("change", () => { updDtaObjBilir() });
     document.getElementById('lockButton').addEventListener("click", () => { lockUnlockField() });
