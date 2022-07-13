@@ -194,7 +194,7 @@ function lockUnlockField() {
 // Function to show version
 //
 function showVersion() {
-    document.getElementById("version").innerHTML = "<br><p>Version 1.01 - 20220623 - A.Azzola, P.Como</p>"
+    document.getElementById("version").innerHTML = "<br><p>Version 1.02 - 20220713 - A.Azzola, P.Como</p>"
 }
 
 //----------------------------------------------
@@ -609,7 +609,7 @@ function onClickBtnShowGraph() {
         const totalSerumBili_06_12 = roundToDigit(totalSerumBili + totalSerumBili * TOLLERANCE_6_12, 2);
         const totalSerumBilistr = "Bilirubin (val, +5%, +10%)= " + totalSerumBili + ", " + totalSerumBili_00_06 + ", " + totalSerumBili_06_12
 
-        document.getElementById('value').value = lowLimitstr + '\n' + hightLimitstr + '\n' + totalSerumBilistr;
+        document.getElementById('value').value = lowLimitstr + '\n' + hightLimitstr + '\n' //  + totalSerumBilistr;
     }
 };
 
