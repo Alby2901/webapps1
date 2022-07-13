@@ -164,12 +164,12 @@ function lockUnlockField() {
         document.getElementById('pazCognNom').disabled = false;
         document.getElementById('DayTimeofBirth').disabled = false;
 
-            const dateTimeFieldStrDateOfExam = dateJsObj_2_DateTimeFieldString(dayjs());
-            document.getElementById('DayTimeofBirth').value = "2022-01-01T00:01";
-            document.getElementById('DayTimeofBirth').min = "";
-            document.getElementById('DayTimeofExam').value = dateTimeFieldStrDateOfExam;
-            document.getElementById('DayTimeofExam').min = "";
-            calcolaValori();
+        const dateTimeFieldStrDateOfExam = dateJsObj_2_DateTimeFieldString(dayjs());
+        document.getElementById('DayTimeofBirth').value = "2022-01-01T00:01";
+        document.getElementById('DayTimeofBirth').min = "";
+        document.getElementById('DayTimeofExam').value = dateTimeFieldStrDateOfExam;
+        document.getElementById('DayTimeofExam').min = "";
+        calcolaValori();
 
         document.getElementById('hourAfterBirth').disabled = false;
         document.getElementById('dayHourAfterBirth').disabled = false;
@@ -423,6 +423,10 @@ function drawGraphic(dataLinesGraph, hourAfterBirth, totalSerumBili, examUnit, p
                 fontSize: 18
             }
         },
+        
+        tooltip: {
+            trigger: 'axis'
+        },
 
         legend: {
             data: ['Phototerapy', 'Exchange Transfusion', 'Photot. limit', 'ExchangeT. limit', 'Patient Bilir. Serum'],
@@ -461,10 +465,10 @@ function drawGraphic(dataLinesGraph, hourAfterBirth, totalSerumBili, examUnit, p
             serie5,
 
         ]
-    };
+};
 
-    // Display the chart using the configuration items and data just specified.
-    myChart.setOption(option);
+// Display the chart using the configuration items and data just specified.
+myChart.setOption(option);
 };
 
 //----------------------------------------------
