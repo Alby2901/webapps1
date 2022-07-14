@@ -1,4 +1,10 @@
 'use strict'
+//----------------------------------------------
+// Function to show version
+//
+function showVersion() {
+    document.getElementById("version").innerHTML = "<br><p>Version 1.05 - 20220714 - A.Azzola, P.Como</p>"
+}
 
 
 //----------------------------------------------
@@ -154,6 +160,18 @@ function setInizialValueOfInputField() {
 }
 
 //----------------------------------------------
+// Function to print page 
+//
+function printPage() {
+
+    document.getElementById('unlockButton').style.display = "none";
+    document.getElementById('lockButton').style.display = "none";
+    document.getElementById('printButton').style.display = "none";
+    window.print();
+    location.reload()
+}
+
+//----------------------------------------------
 // Function to set the inizial value of input field 
 //
 function lockUnlockField() {
@@ -174,7 +192,7 @@ function lockUnlockField() {
         document.getElementById('hourAfterBirth').disabled = false;
         document.getElementById('dayHourAfterBirth').disabled = false;
         document.getElementById('pazEtaGest').disabled = false;
-        document.getElementById('lockButton').style.display = "block";
+        document.getElementById('lockButton').style.display = "inline";
         document.getElementById('unlockButton').style.display = "none";
 
     } else {
@@ -185,16 +203,9 @@ function lockUnlockField() {
         document.getElementById('dayHourAfterBirth').disabled = true;
         document.getElementById('pazEtaGest').disabled = true;
         document.getElementById('lockButton').style.display = "none";
-        document.getElementById('unlockButton').style.display = "block";
+        document.getElementById('unlockButton').style.display = "inline";
     }
 
-}
-
-//----------------------------------------------
-// Function to show version
-//
-function showVersion() {
-    document.getElementById("version").innerHTML = "<br><p>Version 1.02 - 20220713 - A.Azzola, P.Como</p>"
 }
 
 //----------------------------------------------
@@ -425,7 +436,8 @@ function drawGraphic(dataLinesGraph, hourAfterBirth, totalSerumBili, examUnit, p
         },
         
         tooltip: {
-            trigger: 'axis'
+            trigger: 'axis',
+            valueFormatter: (value) => value.toFixed(2),
         },
 
         legend: {
