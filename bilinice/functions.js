@@ -437,16 +437,7 @@ function drawGraphic(dataLinesGraph, hourAfterBirth, totalSerumBili, examUnit, p
         
         tooltip: {
             trigger: 'axis',
-<<<<<<< HEAD
             valueFormatter: (value) => value.toFixed(2),
-=======
-            //formatter: (value) => '$' + value.toFixed(2)
-            //formatter : function (params) {
-                // var value = params.value;
-                //value = value.replace(/(\d{1,3})(?=(?:\d{3})+(?!\d))/g, '$1,');
-                // return value + ' Billion';
-            // },
->>>>>>> 5fad7b163a1218e8848dbb8e8b8abc98cb0d972b
         },
 
         legend: {
