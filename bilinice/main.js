@@ -112,6 +112,8 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('totalSerumBili').addEventListener("change", () => { updDtaObjBilir() });
     document.getElementById('lockButton').addEventListener("click", () => { lockUnlockField() });
     document.getElementById('unlockButton').addEventListener("click", () => { lockUnlockField() });
+    document.getElementById('printButton').addEventListener("click", () => { printPage() });
+
 
     // read parameter from query string and set value in inpuput data obj
     showVersion();
