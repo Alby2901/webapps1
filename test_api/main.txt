@@ -1,0 +1,44 @@
+
+
+window.addEventListener('load', () => {
+    initializeEnv() // prepare event handler
+    
+});
+
+async function testApiGet() {
+
+    // get all exams from the backend (REST API)
+    const firstResponseJeson = await testGet();
+    console.log('Json di risposta 2: ' + firstResponseJeson);
+
+    // update the table the new content
+    const output = document.querySelector('#jasonResponse');
+    output.innerHTML = JSON.stringify(firstResponseJeson); // remove old content
+    
+}
+
+async function initializeEnv() {
+    
+    // button event listener
+    document.querySelector("#testbutton").addEventListener('click', () => {
+        testApiGet()
+    });
+}   
+
+// All the API calls are defined here
+
+async function testGet() {
+    // call REST API : GET /exams
+    const response = await fetch('https://httpbin.org/get');
+    const response_json = await response.json();
+    if (response.ok) {
+        console.log('risposta ok ');
+        console.log('Json di risposta: ' + JSON.stringify(response_json));
+        return response_json;
+    } else {
+        console.log('risposta KO! ')
+        throw response_json;  // An object with the error coming from the server
+    }
+}
+
+
